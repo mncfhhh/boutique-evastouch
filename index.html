@@ -270,30 +270,30 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
-            </div>
+                    </div> 
 
-            <!-- Modal Footer -->
-            <!-- Modal Footer (Non figé, tout en bas) -->
-    <div id="modal-footer" class="p-6 bg-white border-t border-gray-100">
-        <div class="flex justify-between items-center mb-2 text-sm font-medium text-gray-600">
-            <span>Sous-total</span>
-            <span id="summary-subtotal">0 DZD</span>
-        </div>
-        <div class="flex justify-between items-center mb-4 text-sm font-medium text-gray-600">
-            <span>Frais de livraison</span>
-            <span id="summary-shipping" class="text-eva-burgundy font-bold">0 DZD</span>
-        </div>
-        <div class="flex justify-between items-center mb-6">
-            <span class="text-lg font-bold text-gray-900">TOTAL</span>
-            <span class="text-2xl font-bold text-eva-burgundy" id="summary-total">0 DZD</span>
-        </div>
-        <button id="submit-order-btn" onclick="submitOrder()" class="w-full h-[52px] bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold transition-colors flex items-center justify-center">
-            <span id="submit-text">CONFIRMER VOTRE COMMANDE / أكد طلبك</span>
-            <span id="submit-loader" class="loader hidden"></span>
-        </button>
-    </div> 
+                    <!-- Modal Footer (Maintenant à la vraie fin du formulaire) -->
+        <div id="modal-footer" class="p-6 bg-white border-t border-gray-100 mt-4">
+            <div class="flex justify-between items-center mb-2 text-sm font-medium text-gray-600">
+                <span>Sous-total</span>
+                <span id="summary-subtotal">0 DZD</span>
+            </div>
+            <div class="flex justify-between items-center mb-4 text-sm font-medium text-gray-600">
+                <span>Frais de livraison</span>
+                <span id="summary-shipping" class="text-eva-burgundy font-bold">0 DZD</span>
+            </div>
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-lg font-bold text-gray-900">TOTAL</span>
+                <span class="text-2xl font-bold text-eva-burgundy" id="summary-total">0 DZD</span>
+            </div>
+            <button type="button" id="submit-order-btn" onclick="submitOrder()" class="w-full h-[52px] bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold transition-colors flex items-center justify-center mt-6">
+                <span id="submit-text">CONFIRMER VOTRE COMMANDE / أكد طلبك</span>
+                <span id="submit-loader" class="loader hidden"></span>
+            </button>
+        </div> 
+                    
+                </form> 
+            </div> 
 
     <script>
         // --- CONSTANTES & DATA ---
