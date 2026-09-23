@@ -293,7 +293,7 @@
 
     <script>
         // --- CONSTANTES & DATA ---
-        const API_BASE_URL = "https://ton-backend.onrender.com/api"; 
+        const API_BASE_URL = "https://eva-touch-cod-backend.onrender.com/api"; 
 
         const PRODUCT = {
             id: 'tablier-cuisine',
@@ -578,7 +578,8 @@
         });
 
         // --- SOUMISSION ---
-        function submitOrder() {
+        async function submitOrder(e) {
+            e.preventDefault();
             const btn = document.getElementById('submit-order-btn');
             if(btn.disabled) return;
 
@@ -586,26 +587,64 @@
             document.getElementById('submit-text').classList.add('hidden');
             document.getElementById('submit-loader').classList.remove('hidden');
 
-            // Simulate API Call delay
-            setTimeout(() => {
-                // Success UI changes
+            const type = document.querySelector('input[name="delivery"]:checked').value;
+            
+            const orderData = {
+                customer: {
+                    firstName: document.getElementById('firstName').value.trim(),
+                    lastName: document.getElementById('lastName').value.trim(),
+                    phone: document.getElementById('phone').value.trim()
+                },
+                items: [{
+                    name: productData.title,
+                    variant: selectedVariant.name,
+                    variantId: selectedVariant.variantId,
+                    quantity: quantity,
+                    price: productData.price
+                }],
+                subtotal: productData.price * quantity,
+                delivery: {
+                    wilayaId: parseInt(document.getElementById('wilaya').value),
+                    wilayaName: document.getElementById('wilaya').options[document.getElementById('wilaya').selectedIndex].text,
+                    communeId: parseInt(document.getElementById('commune').value),
+                    communeName: document.getElementById('commune').options[document.getElementById('commune').selectedIndex].text,
+                    type: type,
+                    deskId: type === 'desk' ? parseInt(document.getElementById('desk').value) : null,
+                    deskName: type === 'desk' ? document.getElementById('desk').options[document.getElementById('desk').selectedIndex].text : null,
+                    address: type === 'home' ? document.getElementById('address').value.trim() : null,
+                    shippingCost: currentShippingCost
+                },
+                shippingCost: currentShippingCost,
+                total: (productData.price * quantity) + currentShippingCost
+            };
+
+            try {
+                // ENVOI AU BACKEND SUR LA NOUVELLE ROUTE TELEGRAM !
+                const response = await fetch(`${API_BASE_URL}/order-telegram`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) throw new Error('Erreur serveur');
+
+                // Succès
                 document.getElementById('checkout-form').classList.add('hidden');
                 document.getElementById('modal-footer').classList.add('hidden');
+                document.getElementById('success-state').classList.remove('hidden');
                 
-                const successState = document.getElementById('success-state');
-                successState.classList.remove('hidden');
-                successState.classList.add('modal-enter');
-                
-                // Clear cart
-                state.cart = [];
+                // Vider le panier
                 localStorage.removeItem('evastouch_cart');
-                updateCartBadge();
                 
-                // Reset Button
+            } catch (error) {
+                alert('‼️ Impossible de confirmer la commande, veuillez réessayer. 🫶🏻🌸');
+            } finally {
                 btn.disabled = false;
                 document.getElementById('submit-text').classList.remove('hidden');
                 document.getElementById('submit-loader').classList.add('hidden');
-            }, 1500);
+            }
         }
 
         // Run on load
