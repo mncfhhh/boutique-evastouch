@@ -561,7 +561,7 @@
             document.getElementById(id).addEventListener('change', validateForm);
         });
 
-        // --- SOUMISSION ---
+                // --- SOUMISSION ---
         async function submitOrder() {
             const btn = document.getElementById('submit-order-btn');
             if(btn.disabled) return;
@@ -570,65 +570,57 @@
             document.getElementById('submit-text').classList.add('hidden');
             document.getElementById('submit-loader').classList.remove('hidden');
 
-            const type = document.querySelector('input[name="delivery"]:checked').value;
-            
-            const orderData = {
-                customer: {
-                    firstName: document.getElementById('firstName').value.trim(),
-                    lastName: document.getElementById('lastName').value.trim(),
-                    phone: document.getElementById('phone').value.trim()
-                },
-                items: [{
-                    name: productData.title,
-                    variant: selectedVariant.name,
-                    variantId: selectedVariant.variantId,
-                    quantity: quantity,
-                    price: productData.price
-                }],
-                subtotal: productData.price * quantity,
-                delivery: {
-                    wilayaId: parseInt(document.getElementById('wilaya').value),
-                    wilayaName: document.getElementById('wilaya').options[document.getElementById('wilaya').selectedIndex].text,
-                    communeId: parseInt(document.getElementById('commune').value),
-                    communeName: document.getElementById('commune').options[document.getElementById('commune').selectedIndex].text,
-                    type: type,
-                    deskId: type === 'desk' ? parseInt(document.getElementById('desk').value) : null,
-                    deskName: type === 'desk' ? document.getElementById('desk').options[document.getElementById('desk').selectedIndex].text : null,
-                    address: type === 'home' ? document.getElementById('address').value.trim() : null,
-                    shippingCost: currentShippingCost
-                },
-                shippingCost: currentShippingCost,
-                total: (productData.price * quantity) + currentShippingCost
-            };
-
             try {
-                // ENVOI AU BACKEND SUR LA NOUVELLE ROUTE TELEGRAM !
+                // Récupération sécurisée des données
+                const type = document.querySelector('input[name="delivery"]:checked').value;
+                const shippingCost = type === 'home' ? 800 : 500;
+                
+                const orderData = {
+                    customer: {
+                        firstName: document.getElementById('firstName').value.trim(),
+                        lastName: document.getElementById('lastName').value.trim(),
+                        phone: document.getElementById('phone').value.trim()
+                    },
+                    items: [{
+                        name: PRODUCT.name,
+                        variant: (typeof state !== 'undefined' && state.selectedVariant) ? state.selectedVariant.name : "Couleur choisie",
+                        quantity: 1,
+                        price: PRODUCT.price
+                    }],
+                    total: PRODUCT.price + shippingCost,
+                    delivery: {
+                        wilayaName: document.getElementById('wilaya').options[document.getElementById('wilaya').selectedIndex].text,
+                        communeName: document.getElementById('commune').options[document.getElementById('commune').selectedIndex].text,
+                        type: type,
+                        deskName: type === 'desk' ? document.getElementById('desk').options[document.getElementById('desk').selectedIndex].text : null,
+                        address: type === 'home' ? document.getElementById('address').value.trim() : null
+                    }
+                };
+
+                // ENVOI AU BACKEND
                 const response = await fetch(`${API_BASE_URL}/order-telegram`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(orderData)
                 });
 
                 if (!response.ok) throw new Error('Erreur serveur');
 
-                // Succès
+                // SUCCÈS ! Affichage du message de remerciement
                 document.getElementById('checkout-form').classList.add('hidden');
                 document.getElementById('modal-footer').classList.add('hidden');
                 document.getElementById('success-state').classList.remove('hidden');
                 
-                // Vider le panier
-                localStorage.removeItem('evastouch_cart');
-                
             } catch (error) {
-                alert('‼️ Impossible de confirmer la commande, veuillez réessayer. 🫶🏻🌸');
+                console.error("Erreur de commande:", error);
+                alert('‼️ Impossible de confirmer la commande. Vérifiez votre connexion.');
             } finally {
                 btn.disabled = false;
                 document.getElementById('submit-text').classList.remove('hidden');
                 document.getElementById('submit-loader').classList.add('hidden');
             }
         }
+
 
         // Run on load
         document.addEventListener('DOMContentLoaded', initProduct);
