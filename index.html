@@ -283,7 +283,7 @@
                     <span class="text-2xl font-bold text-eva-burgundy" id="summary-total">1800 DZD</span>
                 </div>
                 
-                <button id="submit-order-btn" onclick="submitOrder()" disabled class="w-full bg-eva-burgundy hover:bg-eva-burgundyLight text-white font-bold py-4.5 rounded-xl shadow-xl shadow-eva-pink transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2 text-lg h-14">
+                <button id="submit-order-btn" onclick="submitOrder()" class="w-full bg-eva-burgundy hover:bg-eva-burgundyLight text-white font-bold py-4.5 rounded-xl shadow-xl shadow-eva-pink transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none flex items-center justify-center gap-2 text-lg h-14">
                     <span id="submit-text">CONFIRMER VOTRE COMMANDE / أكد طلبك</span>
                     <div id="submit-loader" class="loader hidden"></div>
                 </button>
@@ -551,26 +551,9 @@
         }
 
         function validateForm() {
-            const phone = document.getElementById('phone').value.trim();
-            const phoneRegex = /^(05|06|07)[0-9]{8}$/;
-            const isPhoneValid = phoneRegex.test(phone);
-            
-            const errorEl = document.getElementById('phone-error');
-            if (phone.length > 2 && !isPhoneValid) {
-                errorEl.classList.remove('hidden');
-            } else {
-                errorEl.classList.add('hidden');
-            }
-
-            const hasName = document.getElementById('firstName').value.trim() !== '' && document.getElementById('lastName').value.trim() !== '';
-            const type = document.querySelector('input[name="deliveryType"]:checked')?.value;
-            
-            let isDeliveryValid = false;
-            if (type === 'desk') isDeliveryValid = document.getElementById('desk').value !== '';
-            else if (type === 'home') isDeliveryValid = document.getElementById('address').value.trim() !== '';
-
-            document.getElementById('submit-order-btn').disabled = !(isPhoneValid && hasName && state.selectedCommune && isDeliveryValid);
-        }
+    // On force le bouton à être toujours actif et cliquable
+    document.getElementById('submit-order-btn').disabled = false;
+}
 
         ['firstName', 'lastName', 'phone', 'desk', 'address'].forEach(id => {
             document.getElementById(id).addEventListener('input', validateForm);
