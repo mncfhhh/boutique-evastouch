@@ -347,22 +347,30 @@
             // Force le conteneur à afficher les éléments en colonne (vertical)
             container.className = 'flex flex-col gap-3 w-full mt-4';
 
-            PRODUCT.variants.forEach(variant => {
-                const btn = document.createElement('button');
-                const isActive = state.selectedVariant.id === variant.id;
+           PRODUCT.variants.forEach(variant => {
+            const btn = document.createElement('button');
+            const isOutOfStock = variant.stock === 0;
+            const isActive = state.selectedVariant.id === variant.id;
 
-                // Nouveau design : bouton large, texte centré, bordure noire si sélectionné
-                btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-lg font-medium flex items-center justify-center gap-2 ${isActive ? 'border-black bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'}`;
-                
-                // Affiche le nom de la couleur et l'emoji à l'intérieur
+            if (isOutOfStock) {
+                // Bouton GRISÉ et BARRÉ (Rupture de stock)
+                btn.className = "relative w-full py-3 px-4 rounded-2xl border-2 border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed font-medium overflow-hidden transition-all duration-300";
+                btn.disabled = true; // Empêche le clic
+                btn.innerHTML = `
+                    <span class="relative z-10">${variant.name}</span>
+                    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top right, transparent calc(50% - 1px), #d1d5db calc(50%), transparent calc(50% + 1px));"></div>
+                `;
+            } else {
+                // Bouton NORMAL (En stock)
+                btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-center font-medium ${isActive ? 'border-gray-900 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 hover:border-gray-900 text-gray-700'}`;
                 btn.innerHTML = variant.name;
-                
                 btn.onclick = () => {
                     state.selectedVariant = variant;
-                    initProduct();
+                    initProduct(); // Rafraîchit l'affichage avec la nouvelle couleur
                 };
-                container.appendChild(btn);
-            });
+            }
+            container.appendChild(btn);
+        });
 
             document.getElementById('main-image').src = state.selectedVariant.img;
             
@@ -381,31 +389,49 @@
             }
         }
 
-        function addToCart() {
+function addToCart() {
+        if (!state.selectedVariant) {
+            alert("Veuillez sélectionner une couleur.");
+            return;
+        }
+
+        const currentVariant = PRODUCT.variants.find(v => v.name === state.selectedVariant.name);
+        const existingItem = state.cart.find(i => i.variant === state.selectedVariant.name);
+        
+        const qtyInCart = existingItem ? existingItem.qty : 0;
+        const requestedQty = parseInt(state.currentQty);
+
+        // LE BLOCAGE EST ICI : On vérifie si l'ajout dépasse le stock
+        if (currentVariant.stock !== undefined && (qtyInCart + requestedQty) > currentVariant.stock) {
+            alert(`Désolé, il ne reste que ${currentVariant.stock} article(s) en stock pour cette couleur.`);
+            return; 
+        }
+
         const item = {
             id: PRODUCT.id,
             name: PRODUCT.name,
             variant: state.selectedVariant.name,
             price: PRODUCT.price,
             img: state.selectedVariant.img,
-            qty: parseInt(state.currentQty) // Force JS à utiliser des nombres
+            qty: requestedQty
         };
 
-        const existingItem = state.cart.find(i => i.variant === item.variant);
-        
         if (existingItem) {
-            existingItem.qty = parseInt(existingItem.qty) + parseInt(state.currentQty); // Vraie addition
+            existingItem.qty += requestedQty;
         } else {
             state.cart.push(item);
         }
 
         state.currentQty = 1;
-        const display = document.getElementById('display-current-qty');
-        if (display) display.innerText = '1';
+        const displayQty = document.getElementById('display-current-qty');
+        if (displayQty) displayQty.innerText = '1';
 
         localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-        updateCartBadge();
-    }
+        if (typeof updateCartBadge === 'function') updateCartBadge();
+        
+        const cartSidebar = document.getElementById('cart-sidebar');
+        if (cartSidebar) cartSidebar.classList.remove('translate-x-full');
+    } 
 
     function addToCartAndCheckout() {
         addToCart();
@@ -657,15 +683,27 @@
         const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
         const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
 
+        // NOUVEAU : Récupération dynamique du nom du bureau Yalidine
+        const deskSelect = document.getElementById('desk');
+        const deskName = (deliveryType === 'desk' && deskSelect && deskSelect.selectedIndex > 0) 
+            ? deskSelect.options[deskSelect.selectedIndex].text 
+            : '';
+
         // 1. Vérification des champs de base
         if (!firstName || !lastName || !phone || !wilaya || !commune) {
             alert("Veuillez remplir tous les champs obligatoires (Nom, Prénom, Téléphone, Wilaya et Commune).");
             return;
         }
 
-        // 2. Vérification de l'adresse UNIQUEMENT si livraison à domicile
+        // 2. Vérification de l'adresse pour livraison à domicile
         if (deliveryType === 'home' && !address) {
             alert("Veuillez saisir votre adresse détaillée pour la livraison à domicile.");
+            return;
+        }
+
+        // 3. NOUVEAU : Vérification du Bureau Yalidine
+        if (deliveryType === 'desk' && !deskName) {
+            alert("Veuillez sélectionner un bureau Yalidine dans la liste.");
             return;
         }
 
@@ -677,7 +715,6 @@
         document.getElementById('submit-loader').classList.remove('hidden');
 
         try {
-            // Prépare le tableau d'articles pour le backend
             const itemsArray = state.cart.map(i => ({
                 name: i.name,
                 variant: i.variant,
@@ -686,13 +723,8 @@
 
             let totalGeneral = document.getElementById('summary-total').innerText;
             
-            // Format exact attendu par ton server.js !
             const orderData = {
-                customer: {
-                    firstName,
-                    lastName,
-                    phone
-                },
+                customer: { firstName, lastName, phone },
                 items: itemsArray,
                 total: totalGeneral,
                 delivery: {
@@ -700,7 +732,7 @@
                     wilayaName: wilaya,
                     communeName: commune,
                     address: address,
-                    deskName: ''
+                    deskName: deskName // La variable est maintenant envoyée au backend !
                 }
             };
 
@@ -712,12 +744,10 @@
 
             if (!response.ok) throw new Error('Erreur serveur');
 
-            // SUCCÈS ! Affichage du message de remerciement
             document.getElementById('checkout-form').classList.add('hidden');
             document.getElementById('modal-footer').classList.add('hidden');
             document.getElementById('success-state').classList.remove('hidden');
             
-            // Vide le panier après commande réussie
             state.cart = [];
             localStorage.removeItem('evastouch_cart');
             if (typeof updateCartBadge === 'function') updateCartBadge();
