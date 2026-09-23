@@ -275,7 +275,7 @@
             </div>
 
             <!-- Modal Footer -->
-            <div id="modal-footer" class="border-t border-gray-100 p-6 bg-white z-10 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.05)]">
+            <div id="modal-footer" class="border-t border-gray-100 p-6 bg-white"> 
                 <div class="flex justify-between items-center mb-2 text-sm font-medium text-gray-500">
                     <span>Sous-total</span>
                     <span id="summary-subtotal">1800 DZD</span>
@@ -618,14 +618,25 @@
         });
 
         function updateTotals() {
-            const type = document.querySelector('input[name="deliveryType"]:checked')?.value;
-            let shipping = 0;
-            if (type === 'desk') shipping = state.deliveryPrices.deskDelivery;
-            if (type === 'home') shipping = state.deliveryPrices.homeDelivery;
+    // Calcule le sous-total de tout le panier
+    let sousTotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    let shipping = 0;
+    const type = document.querySelector('input[name="deliveryType"]:checked');
+    if (type) {
+        if (type.value === 'desk') shipping = state.deliveryPrices.deskDelivery;
+        if (type.value === 'home') shipping = state.deliveryPrices.homeDelivery;
+    }
 
-            document.getElementById('summary-shipping').innerText = shipping > 0 ? `${shipping} DZD` : '-- DZD';
-            document.getElementById('summary-total').innerText = `${PRODUCT.price + shipping} DZD`;
-        }
+    const subtotalEl = document.getElementById('summary-subtotal');
+    if (subtotalEl) subtotalEl.innerText = sousTotal + ' DZD';
+
+    const shippingEl = document.getElementById('summary-shipping');
+    if (shippingEl) shippingEl.innerText = shipping + ' DZD';
+
+    const totalEl = document.getElementById('summary-total');
+    if (totalEl) totalEl.innerText = (sousTotal + shipping) + ' DZD';
+} 
 
         function validateForm() {
     // On force le bouton à être toujours actif et cliquable
