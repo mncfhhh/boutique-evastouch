@@ -341,6 +341,7 @@
         // --- STATE ---
         let state = {
             selectedVariant: PRODUCT.variants[0],
+            currentQty: 1,
             cart: JSON.parse(localStorage.getItem('evastouch_cart')) || [],
             deliveryPrices: { homeDelivery: 0, deskDelivery: 0 },
             selectedWilaya: null,
@@ -370,29 +371,43 @@
             updateCartBadge();
         }
 
-        // --- PANIER ---
+       // --- QUANTITÉ & PANIER ---
+        function changeCurrentQty(change) {
+            let newQty = state.currentQty + change;
+            if (newQty >= 1) {
+                state.currentQty = newQty;
+                const display = document.getElementById('display-current-qty');
+                if (display) display.innerText = state.currentQty;
+            }
+        }
+
         function addToCart() {
-    const item = {
-        id: PRODUCT.id,
-        name: PRODUCT.name,
-        variant: state.selectedVariant.name,
-        price: PRODUCT.price,
-        img: state.selectedVariant.img,
-        qty: 1
-    };
+            const item = {
+                id: PRODUCT.id,
+                name: PRODUCT.name,
+                variant: state.selectedVariant.name,
+                price: PRODUCT.price,
+                img: state.selectedVariant.img,
+                qty: state.currentQty
+            };
 
-    // On vérifie si cette couleur est déjà dans le panier
-    const existingItem = state.cart.find(i => i.variant === item.variant);
-    
-    if (existingItem) {
-        existingItem.qty += 1; // Si oui, on augmente la quantité
-    } else {
-        state.cart.push(item); // Sinon, on ajoute cette nouvelle couleur
-    }
+            // On vérifie si cette couleur est déjà dans le panier
+            const existingItem = state.cart.find(i => i.variant === item.variant);
+            
+            if (existingItem) {
+                existingItem.qty += state.currentQty;
+            } else {
+                state.cart.push(item);
+            }
 
-    localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-    updateCartBadge();
-}
+            // Remise à 1 du compteur pour le prochain ajout
+            state.currentQty = 1;
+            const display = document.getElementById('display-current-qty');
+            if (display) display.innerText = '1';
+
+            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+            updateCartBadge();
+        }
         function addToCartAndCheckout() {
             addToCart();
             openModal();
