@@ -656,61 +656,74 @@
         const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
         const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
 
-        // 1. Vérification des champs de base (Nom, Prénom, Tél, Wilaya, Commune)
+        // 1. Vérification des champs de base
         if (!firstName || !lastName || !phone || !wilaya || !commune) {
             alert("Veuillez remplir tous les champs obligatoires (Nom, Prénom, Téléphone, Wilaya et Commune).");
-            return; // Bloque l'envoi
+            return;
         }
 
         // 2. Vérification de l'adresse UNIQUEMENT si livraison à domicile
         if (deliveryType === 'home' && !address) {
             alert("Veuillez saisir votre adresse détaillée pour la livraison à domicile.");
-            return; // Bloque l'envoi
+            return;
         }
 
         const btn = document.getElementById('submit-order-btn');
+        if (btn.disabled) return;
+        
         btn.disabled = true;
         document.getElementById('submit-text').classList.add('hidden');
         document.getElementById('submit-loader').classList.remove('hidden');
 
         try {
-            // Prépare la liste de tous les articles pour Telegram (formaté pour ton backend actuel)
-            let itemsSummary = state.cart.map(i => `${i.name} (${i.variant}) - Qté: ${i.qty}`).join('\n');
-            let totalGeneral = document.getElementById('summary-total').innerText;
+            // Prépare le tableau d'articles pour le backend
+            const itemsArray = state.cart.map(i => ({
+                name: i.name,
+                variant: i.variant,
+                quantity: i.qty
+            }));
 
+            let totalGeneral = document.getElementById('summary-total').innerText;
+            
+            // Format exact attendu par ton server.js !
             const orderData = {
-                firstName,
-                lastName,
-                phone,
-                productName: itemsSummary, // On utilise productName car c'est ce que ton serveur attend !
+                customer: {
+                    firstName,
+                    lastName,
+                    phone
+                },
+                items: itemsArray,
                 total: totalGeneral,
-                wilaya,
-                commune,
-                deliveryType,
-                address
+                delivery: {
+                    type: deliveryType,
+                    wilayaName: wilaya,
+                    communeName: commune,
+                    address: address,
+                    deskName: ''
+                }
             };
 
-            const response = await fetch(API_BASE_URL + '/order-telegram', {
+            const response = await fetch(`${API_BASE_URL}/order-telegram`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData)
             });
 
-            if (response.ok) {
-                document.getElementById('checkout-form').classList.add('hidden');
-                document.getElementById('modal-footer').classList.add('hidden');
-                document.getElementById('success-state').classList.remove('hidden');
-                
-                // Vide le panier après commande réussie
-                state.cart = [];
-                localStorage.removeItem('evastouch_cart');
-                updateCartBadge();
-            } else {
-                alert("Erreur lors de l'envoi de la commande. Veuillez réessayer.");
-            }
+            if (!response.ok) throw new Error('Erreur serveur');
+
+            // SUCCÈS ! Affichage du message de remerciement
+            document.getElementById('checkout-form').classList.add('hidden');
+            document.getElementById('modal-footer').classList.add('hidden');
+            document.getElementById('success-state').classList.remove('hidden');
+            
+            // Vide le panier après commande réussie
+            state.cart = [];
+            localStorage.removeItem('evastouch_cart');
+            if (typeof updateCartBadge === 'function') updateCartBadge();
+            
         } catch (error) {
-            console.error(error);
-            alert("Erreur de connexion au serveur.");
+            console.error("Erreur de commande:", error);
+            alert('‼️ Impossible de confirmer la commande. Vérifiez votre connexion.');
         } finally {
             btn.disabled = false;
             document.getElementById('submit-text').classList.remove('hidden');
