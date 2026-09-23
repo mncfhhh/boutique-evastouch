@@ -479,8 +479,16 @@ function addToCart() {
                 <div class="flex-grow">
                     <h4 class="font-semibold text-gray-900 text-sm">${item.name}</h4>
                     <p class="text-sm text-eva-burgundy font-medium">${item.variant}</p>
-                    <p class="text-xs text-gray-500 mt-1">Qté: ${item.qty}</p>
-                </div>
+                    <div class="flex items-center gap-3 mt-1">
+    <button type="button" onclick="updateCartItemQty('${item.variant}', -1)" class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+    </button>
+    <span class="text-sm font-bold text-gray-800 w-4 text-center">${item.qty}</span>
+    <button type="button" onclick="updateCartItemQty('${item.variant}', 1)" class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+    </button>
+</div>
+</div>
                 <div class="text-right flex flex-col items-end justify-between h-full">
                     <!-- BOUTON CORBEILLE -->
                     <button type="button" onclick="removeFromCart('${item.variant}')" class="text-gray-400 hover:text-red-500 p-1 mb-1 transition-colors">
