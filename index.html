@@ -466,6 +466,44 @@ function addToCart() {
         }
     }
 
+        function updateCartItemQty(variantName, change) {
+        const itemIndex = state.cart.findIndex(i => i.variant === variantName);
+        if (itemIndex > -1) {
+            const currentVariant = PRODUCT.variants.find(v => v.name === variantName);
+            const newQty = state.cart[itemIndex].qty + change;
+
+            if (newQty > 0) {
+                // Vérifier le stock disponible avant d'augmenter la quantité
+                if (change > 0 && currentVariant.stock !== undefined && newQty > currentVariant.stock) {
+                    alert(`Désolé, il ne reste que ${currentVariant.stock} article(s) en stock pour cette couleur.`);
+                    return;
+                }
+                state.cart[itemIndex].qty = newQty;
+            } else {
+                // Si la quantité tombe à 0 ou moins, on supprime l'article du panier
+                state.cart.splice(itemIndex, 1);
+            }
+            
+            // On sauvegarde dans le navigateur
+            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+            
+            // On met à jour l'affichage global
+            if (typeof updateCartBadge === 'function') updateCartBadge();
+            
+            // NOUVEAU : On met à jour le total général du panier
+            const newTotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const totalElement = document.getElementById('summary-subtotal');
+            if (totalElement) {
+                totalElement.innerText = newTotal + ' DZD';
+            }
+            // On rafraîchit le total final (avec livraison) s'il y a une fonction pour ça
+            if (typeof updateOrderSummary === 'function') updateOrderSummary();
+            
+            // On relance la modale pour afficher les nouvelles quantités !
+            openModal(); 
+        }
+    } 
+        
     function openModal() {
         if (state.cart.length === 0) return;
 
