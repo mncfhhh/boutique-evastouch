@@ -359,20 +359,27 @@
 
         // --- PANIER ---
         function addToCart() {
-            const item = {
-                id: PRODUCT.id,
-                name: PRODUCT.name,
-                variant: state.selectedVariant.name,
-                price: PRODUCT.price,
-                img: state.selectedVariant.img,
-                qty: 1
-            };
-            
-            state.cart = [item]; // Replace cart (Standalone logic)
-            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-            updateCartBadge();
-        }
+    const item = {
+        id: PRODUCT.id,
+        name: PRODUCT.name,
+        variant: state.selectedVariant.name,
+        price: PRODUCT.price,
+        img: state.selectedVariant.img,
+        qty: 1
+    };
 
+    // On vérifie si cette couleur est déjà dans le panier
+    const existingItem = state.cart.find(i => i.variant === item.variant);
+    
+    if (existingItem) {
+        existingItem.qty += 1; // Si oui, on augmente la quantité
+    } else {
+        state.cart.push(item); // Sinon, on ajoute cette nouvelle couleur
+    }
+
+    localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+    updateCartBadge();
+}
         function addToCartAndCheckout() {
             addToCart();
             openModal();
