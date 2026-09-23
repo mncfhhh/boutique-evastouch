@@ -648,74 +648,75 @@
 
                 // --- SOUMISSION ---
         async function submitOrder() {
-            const btn = document.getElementById('submit-order-btn');
-            if(btn.disabled) return;
+        const firstName = document.getElementById('firstName').value.trim();
+        const lastName = document.getElementById('lastName').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const wilaya = document.getElementById('wilaya').value;
+        const commune = document.getElementById('commune').value;
+        const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
+        const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
 
-            btn.disabled = true;
-            document.getElementById('submit-text').classList.add('hidden');
-            document.getElementById('submit-loader').classList.remove('hidden');
+        // 1. Vérification des champs de base (Nom, Prénom, Tél, Wilaya, Commune)
+        if (!firstName || !lastName || !phone || !wilaya || !commune) {
+            alert("Veuillez remplir tous les champs obligatoires (Nom, Prénom, Téléphone, Wilaya et Commune).");
+            return; // Bloque l'envoi
+        }
 
-            try {
-                // Récupération sécurisée des données
-                // Récupération 100% blindée du type de livraison
-            let type = 'desk';
-            const radio = document.querySelector('input[type="radio"]:checked');
-            
-            if (radio && (radio.value === 'home' || radio.value === 'desk')) {
-                type = radio.value;
-            } else {
-                // Sécurité absolue : si le bouton est introuvable, on déduit du prix affiché
-                const prixAffiche = document.getElementById('summary-shipping') ? document.getElementById('summary-shipping').innerText : '500';
-                type = prixAffiche.includes('800') ? 'home' : 'desk';
-            }
-            const shippingCost = type === 'home' ? 800 : 500;
-                
-                const orderData = {
-                    customer: {
-                        firstName: document.getElementById('firstName').value.trim(),
-                        lastName: document.getElementById('lastName').value.trim(),
-                        phone: document.getElementById('phone').value.trim()
-                    },
-                    items: [{
-                        name: PRODUCT.name,
-                        variant: (typeof state !== 'undefined' && state.selectedVariant) ? state.selectedVariant.name : "Couleur choisie",
-                        quantity: 1,
-                        price: PRODUCT.price
-                    }],
-                    total: PRODUCT.price + shippingCost,
-                    delivery: {
-                        wilayaName: document.getElementById('wilaya').options[document.getElementById('wilaya').selectedIndex].text,
-                        communeName: document.getElementById('commune').options[document.getElementById('commune').selectedIndex].text,
-                        type: type,
-                        deskName: type === 'desk' ? document.getElementById('desk').options[document.getElementById('desk').selectedIndex].text : null,
-                        address: type === 'home' ? document.getElementById('address').value.trim() : null
-                    }
-                };
+        // 2. Vérification de l'adresse UNIQUEMENT si livraison à domicile
+        if (deliveryType === 'home' && !address) {
+            alert("Veuillez saisir votre adresse détaillée pour la livraison à domicile.");
+            return; // Bloque l'envoi
+        }
 
-                // ENVOI AU BACKEND
-                const response = await fetch(`${API_BASE_URL}/order-telegram`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(orderData)
-                });
+        const btn = document.getElementById('submit-order-btn');
+        btn.disabled = true;
+        document.getElementById('submit-text').classList.add('hidden');
+        document.getElementById('submit-loader').classList.remove('hidden');
 
-                if (!response.ok) throw new Error('Erreur serveur');
+        try {
+            // Prépare la liste de tous les articles pour Telegram
+            let itemsSummary = state.cart.map(i => `- ${i.name} (${i.variant}) | Qté: ${i.qty} | Prix: ${i.price * i.qty} DZD`).join('\n');
+            let totalGeneral = document.getElementById('summary-total').innerText;
 
-                // SUCCÈS ! Affichage du message de remerciement
+            const orderData = {
+                firstName,
+                lastName,
+                phone,
+                items: itemsSummary,
+                total: totalGeneral,
+                wilaya,
+                commune,
+                deliveryType,
+                address
+            };
+
+            const response = await fetch(API_BASE_URL + '/order-telegram', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData)
+            });
+
+            if (response.ok) {
                 document.getElementById('checkout-form').classList.add('hidden');
                 document.getElementById('modal-footer').classList.add('hidden');
                 document.getElementById('success-state').classList.remove('hidden');
                 
-            } catch (error) {
-                console.error("Erreur de commande:", error);
-                alert('‼️ Impossible de confirmer la commande. Vérifiez votre connexion.');
-            } finally {
-                btn.disabled = false;
-                document.getElementById('submit-text').classList.remove('hidden');
-                document.getElementById('submit-loader').classList.add('hidden');
+                // Vide le panier après commande réussie
+                state.cart = [];
+                localStorage.removeItem('evastouch_cart');
+                updateCartBadge();
+            } else {
+                alert("Erreur lors de l'envoi de la commande. Veuillez réessayer.");
             }
+        } catch (error) {
+            console.error(error);
+            alert("Erreur de connexion au serveur.");
+        } finally {
+            btn.disabled = false;
+            document.getElementById('submit-text').classList.remove('hidden');
+            document.getElementById('submit-loader').classList.add('hidden');
         }
-
+    } 
 
         // Run on load
         document.addEventListener('DOMContentLoaded', initProduct);
