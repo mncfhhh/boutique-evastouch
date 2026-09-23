@@ -348,17 +348,24 @@
             selectedCommune: null
         };
 
-        // --- INITIALISATION UI ---
+// --- INITIALISATION UI ---
         function initProduct() {
             const container = document.getElementById('variant-selector');
             container.innerHTML = '';
             
+            // Force le conteneur à afficher les éléments en colonne (vertical)
+            container.className = 'flex flex-col gap-3 w-full mt-4';
+
             PRODUCT.variants.forEach(variant => {
                 const btn = document.createElement('button');
                 const isActive = state.selectedVariant.id === variant.id;
+
+                // Nouveau design : bouton large, texte centré, bordure noire si sélectionné
+                btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-lg font-medium flex items-center justify-center gap-2 ${isActive ? 'border-black bg-gray-50' : 'border-gray-200 bg-white hover:border-gray-300'}`;
                 
-                btn.className = `variant-btn w-12 h-12 rounded-full border-4 transition-all duration-200 focus:outline-none ${isActive ? 'active border-white ring-2 ring-eva-burgundy' : 'border-transparent'}`;
-                btn.style.backgroundColor = variant.colorCode;
+                // Affiche le nom de la couleur et l'emoji à l'intérieur
+                btn.innerHTML = variant.name;
+                
                 btn.onclick = () => {
                     state.selectedVariant = variant;
                     initProduct();
@@ -367,8 +374,10 @@
             });
 
             document.getElementById('main-image').src = state.selectedVariant.img;
-            document.getElementById('selected-color-name').innerText = state.selectedVariant.name;
-            updateCartBadge();
+            
+            // Met à jour le petit texte "Couleur sélectionnée" au-dessus si tu l'as toujours
+            const colorNameDisplay = document.getElementById('selected-color-name');
+            if (colorNameDisplay) colorNameDisplay.innerText = state.selectedVariant.name;
         }
 
        // --- QUANTITÉ & PANIER ---
