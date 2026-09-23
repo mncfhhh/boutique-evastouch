@@ -572,8 +572,18 @@
 
             try {
                 // Récupération sécurisée des données
-                const type = document.querySelector('input[name="deliveryType"]:checked').value;
-                const shippingCost = type === 'home' ? 800 : 500;
+                // Récupération 100% blindée du type de livraison
+            let type = 'desk';
+            const radio = document.querySelector('input[type="radio"]:checked');
+            
+            if (radio && (radio.value === 'home' || radio.value === 'desk')) {
+                type = radio.value;
+            } else {
+                // Sécurité absolue : si le bouton est introuvable, on déduit du prix affiché
+                const prixAffiche = document.getElementById('summary-shipping') ? document.getElementById('summary-shipping').innerText : '500';
+                type = prixAffiche.includes('800') ? 'home' : 'desk';
+            }
+            const shippingCost = type === 'home' ? 800 : 500;
                 
                 const orderData = {
                     customer: {
