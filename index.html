@@ -183,18 +183,10 @@
                 <!-- Form -->
                 <form id="checkout-form" class="space-y-8">
                     
-                    <!-- Cart Summary -->
-                    <div class="bg-eva-beige p-4 rounded-2xl flex items-center gap-4 border border-eva-pinkLight">
-                        <img id="cart-item-img" src="" class="w-20 h-20 object-cover rounded-xl shadow-sm border border-white">
-                        <div class="flex-grow">
-                            <h4 class="font-semibold text-gray-900 text-sm md:text-base">Tablier anti-taches</h4>
-                            <p id="cart-item-variant" class="text-sm text-eva-burgundy font-medium mt-1"></p>
-                        </div>
-                        <div class="text-right">
-                            <p class="font-bold text-gray-900 text-lg">1800 DZD</p>
-                            <p class="text-xs text-gray-500 font-medium">Qté: 1</p>
-                        </div>
-                    </div>
+                    <!-- Liste des Produits du Panier (injectée par JS) -->
+    <div id="checkout-cart-items" class="flex flex-col gap-3">
+        <!-- Les articles apparaîtront ici -->
+    </div> 
 
                     <!-- Client Info -->
                     <div>
@@ -434,22 +426,49 @@
 
         // --- MODAL & FORMULAIRE ---
         function openModal() {
-            if (state.cart.length === 0) return;
+        if (state.cart.length === 0) return;
+
+        // 1. On vide le conteneur et on prépare le sous-total
+        const itemsContainer = document.getElementById('checkout-cart-items');
+        itemsContainer.innerHTML = '';
+        let sousTotal = 0;
+
+        // 2. On boucle sur le panier pour afficher tous les articles
+        state.cart.forEach(item => {
+            sousTotal += item.price * item.qty;
             
-            const item = state.cart[0];
-            document.getElementById('cart-item-img').src = item.img;
-            document.getElementById('cart-item-variant').innerText = item.variant;
+            const itemHTML = `
+            <div class="bg-eva-beige p-4 rounded-2xl flex items-center gap-4 border border-eva-pinkLight">
+                <img src="${item.img}" class="w-20 h-20 object-cover rounded-xl shadow-sm border border-gray-100">
+                <div class="flex-grow">
+                    <h4 class="font-semibold text-gray-900 text-sm md:text-base">${item.name}</h4>
+                    <p class="text-sm text-eva-burgundy font-medium mt-1">${item.variant}</p>
+                </div>
+                <div class="text-right">
+                    <p class="font-bold text-gray-900 text-lg">${item.price} DZD</p>
+                    <p class="text-xs text-gray-500 font-medium">Qté: ${item.qty}</p>
+                </div>
+            </div>`;
             
-            document.getElementById('checkout-modal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-            
-            // Reset state
-            document.getElementById('success-state').classList.add('hidden');
-            document.getElementById('checkout-form').classList.remove('hidden');
-            document.getElementById('modal-footer').classList.remove('hidden');
-            
-            loadWilayas();
+            itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+        });
+
+        // 3. On affiche la modale
+        document.getElementById('checkout-modal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+
+        // 4. Reset state du formulaire
+        document.getElementById('success-state').classList.add('hidden');
+        document.getElementById('checkout-form').classList.remove('hidden');
+        document.getElementById('modal-footer').classList.remove('hidden');
+
+        loadWilayas();
+        
+        // Si tu as une fonction updateTotal, on l'appelle pour recalculer le prix final avec livraison
+        if (typeof updateTotal === 'function') {
+            updateTotal();
         }
+    }
 
         function closeModal() {
             document.getElementById('checkout-modal').classList.add('hidden');
