@@ -674,15 +674,15 @@
         document.getElementById('submit-loader').classList.remove('hidden');
 
         try {
-            // Prépare la liste de tous les articles pour Telegram
-            let itemsSummary = state.cart.map(i => `- ${i.name} (${i.variant}) | Qté: ${i.qty} | Prix: ${i.price * i.qty} DZD`).join('\n');
+            // Prépare la liste de tous les articles pour Telegram (formaté pour ton backend actuel)
+            let itemsSummary = state.cart.map(i => `${i.name} (${i.variant}) - Qté: ${i.qty}`).join('\n');
             let totalGeneral = document.getElementById('summary-total').innerText;
 
             const orderData = {
                 firstName,
                 lastName,
                 phone,
-                items: itemsSummary,
+                productName: itemsSummary, // On utilise productName car c'est ce que ton serveur attend !
                 total: totalGeneral,
                 wilaya,
                 commune,
