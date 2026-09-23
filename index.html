@@ -383,92 +383,105 @@
         }
 
         function addToCart() {
-            const item = {
-                id: PRODUCT.id,
-                name: PRODUCT.name,
-                variant: state.selectedVariant.name,
-                price: PRODUCT.price,
-                img: state.selectedVariant.img,
-                qty: state.currentQty
-            };
+        const item = {
+            id: PRODUCT.id,
+            name: PRODUCT.name,
+            variant: state.selectedVariant.name,
+            price: PRODUCT.price,
+            img: state.selectedVariant.img,
+            qty: parseInt(state.currentQty) // Force JS à utiliser des nombres
+        };
 
-            // On vérifie si cette couleur est déjà dans le panier
-            const existingItem = state.cart.find(i => i.variant === item.variant);
-            
-            if (existingItem) {
-                existingItem.qty += state.currentQty;
-            } else {
-                state.cart.push(item);
-            }
-
-            // Remise à 1 du compteur pour le prochain ajout
-            state.currentQty = 1;
-            const display = document.getElementById('display-current-qty');
-            if (display) display.innerText = '1';
-
-            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-            updateCartBadge();
-        }
-        function addToCartAndCheckout() {
-            addToCart();
-            openModal();
+        const existingItem = state.cart.find(i => i.variant === item.variant);
+        
+        if (existingItem) {
+            existingItem.qty = parseInt(existingItem.qty) + parseInt(state.currentQty); // Vraie addition
+        } else {
+            state.cart.push(item);
         }
 
-        function updateCartBadge() {
-            const badge = document.getElementById('cart-count');
-            if (state.cart.length > 0) {
-                badge.innerText = state.cart.length;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-        }
+        state.currentQty = 1;
+        const display = document.getElementById('display-current-qty');
+        if (display) display.innerText = '1';
 
-        // --- MODAL & FORMULAIRE ---
-        function openModal() {
+        localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+        updateCartBadge();
+    }
+
+    function addToCartAndCheckout() {
+        addToCart();
+        openModal();
+    }
+
+    function updateCartBadge() {
+        const badge = document.getElementById('cart-count');
+        if (!badge) return;
+        
+        // Calcule le total des articles
+        const totalItems = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
+        
+        if (totalItems > 0) {
+            badge.innerText = totalItems;
+            badge.classList.remove('hidden');
+        } else {
+            badge.classList.add('hidden');
+        }
+    }
+
+    // Nouvelle fonction pour la corbeille
+    function removeFromCart(variantName) {
+        state.cart = state.cart.filter(item => item.variant !== variantName);
+        localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+        updateCartBadge();
+        
+        if (state.cart.length === 0) {
+            closeModal(); // Ferme le pop-up si le panier est vide
+        } else {
+            openModal(); // Rafraîchit l'affichage
+        }
+    }
+
+    function openModal() {
         if (state.cart.length === 0) return;
 
-        // 1. On vide le conteneur et on prépare le sous-total
         const itemsContainer = document.getElementById('checkout-cart-items');
         itemsContainer.innerHTML = '';
-        let sousTotal = 0;
-
-        // 2. On boucle sur le panier pour afficher tous les articles
+        
         state.cart.forEach(item => {
-            sousTotal += item.price * item.qty;
-            
             const itemHTML = `
-            <div class="bg-eva-beige p-4 rounded-2xl flex items-center gap-4 border border-eva-pinkLight">
-                <img src="${item.img}" class="w-20 h-20 object-cover rounded-xl shadow-sm border border-gray-100">
+            <div class="bg-eva-beige p-3 rounded-2xl flex items-center gap-4 border border-eva-pinkLight relative">
+                <img src="${item.img}" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-gray-100">
                 <div class="flex-grow">
-                    <h4 class="font-semibold text-gray-900 text-sm md:text-base">${item.name}</h4>
-                    <p class="text-sm text-eva-burgundy font-medium mt-1">${item.variant}</p>
+                    <h4 class="font-semibold text-gray-900 text-sm">${item.name}</h4>
+                    <p class="text-sm text-eva-burgundy font-medium">${item.variant}</p>
+                    <p class="text-xs text-gray-500 mt-1">Qté: ${item.qty}</p>
                 </div>
-                <div class="text-right">
-                    <p class="font-bold text-gray-900 text-lg">${item.price} DZD</p>
-                    <p class="text-xs text-gray-500 font-medium">Qté: ${item.qty}</p>
+                <div class="text-right flex flex-col items-end justify-between h-full">
+                    <!-- BOUTON CORBEILLE -->
+                    <button type="button" onclick="removeFromCart('${item.variant}')" class="text-gray-400 hover:text-red-500 p-1 mb-1 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                    <p class="font-bold text-gray-900">${item.price * item.qty} DZD</p>
                 </div>
             </div>`;
             
             itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
         });
 
-        // 3. On affiche la modale
         document.getElementById('checkout-modal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
 
-        // 4. Reset state du formulaire
         document.getElementById('success-state').classList.add('hidden');
         document.getElementById('checkout-form').classList.remove('hidden');
-        document.getElementById('modal-footer').classList.remove('hidden');
+        
+        const modalFooter = document.getElementById('modal-footer');
+        if (modalFooter) modalFooter.classList.remove('hidden');
 
         loadWilayas();
-        
-        // Si tu as une fonction updateTotal, on l'appelle pour recalculer le prix final avec livraison
         if (typeof updateTotal === 'function') {
             updateTotal();
         }
-    }
+    } 
 
         function closeModal() {
             document.getElementById('checkout-modal').classList.add('hidden');
