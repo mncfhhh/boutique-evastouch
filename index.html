@@ -750,27 +750,31 @@
 
         async function fetchStockAndInit() {
             try {
-                // 1. Le site demande les vrais chiffres au serveur Render
                 const response = await fetch('https://eva-touch-cod-backend.onrender.com/api/stock', { cache: 'no-store' });
                 const data = await response.json();
                 
                 if (data.success && data.stock) {
-                    // 2. On met à jour les quantités dans le HTML avec la mémoire du serveur
                     PRODUCT.variants.forEach(variant => {
                         if (data.stock[variant.name] !== undefined) {
                             variant.stock = data.stock[variant.name];
                         }
                     });
+                    
+                    // Vérification : est-ce que le site a bien reconnu le 0 ?
+                    const testVariant = PRODUCT.variants.find(v => v.name.includes("🌺"));
+                    if (testVariant && testVariant.stock !== 0) {
+                        alert("Erreur de lecture : Le stock reçu pour la fleur est : " + testVariant.stock);
+                    }
+                } else {
+                    alert("Le serveur n'a pas envoyé le dictionnaire de stock.");
                 }
             } catch (error) {
-                console.error("Erreur de connexion au stock central :", error);
+                alert("Le site n'arrive pas à se connecter au serveur : " + error.message);
             }
             
-            // 3. On génère l'affichage des couleurs après avoir reçu les vrais chiffres
             initProduct();
         }
 
-        // Quand la page s'ouvre, on lance notre nouvelle fonction
         document.addEventListener('DOMContentLoaded', fetchStockAndInit);
 
     </script>
