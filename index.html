@@ -212,7 +212,7 @@
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="relative">
-                                <select id="wilaya" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none transition-all bg-gray-50 appearance-none font-medium text-gray-900" required>
+                                <select id="wilaya" onchange="onWilayaChange()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none transition-all bg-gray-50 appearance-none font-medium text-gray-900" required>
                                     <option value="" disabled selected>Wilaya • الولاية</option>
                                     <!-- Filled by JS -->
                                 </select>
@@ -221,7 +221,7 @@
                                 </div>
                             </div>
                             <div class="relative">
-                                <select id="commune" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none transition-all bg-gray-50 appearance-none disabled:opacity-50 disabled:bg-gray-100 font-medium text-gray-900" disabled required>
+                                <select id="commune" onchange="onCommuneChange()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none transition-all bg-gray-50 appearance-none disabled:opacity-50 disabled:bg-gray-100 font-medium text-gray-900" disabled required>
                                     <option value="" disabled selected>Commune • البلدية</option>
                                     <!-- Filled by JS -->
                                 </select>
@@ -310,24 +310,127 @@
             ]
         };
 
-        // --- MOCK API DATA (Simulates your Backend DB) ---
-        const mockWilayas = [
-            { id: 16, name: "Alger" },
-            { id: 5, name: "Batna" },
-            { id: 31, name: "Oran" }
-        ];
-        
-        // has_stop_desk: 1 means desk is available, 0 means unavailable
-        const mockCommunes = {
-            16: [{ id: 1601, name: "Alger Centre", has_stop_desk: 1 }, { id: 1602, name: "Sidi M'Hamed", has_stop_desk: 1 }],
-            5: [{ id: 501, name: "Batna", has_stop_desk: 1 }, { id: 502, name: "Ain Touta", has_stop_desk: 0 }], // Ain Touta has NO desk
-            31: [{ id: 3101, name: "Oran", has_stop_desk: 1 }]
-        };
+        let currentShippingRates = { home: 0, desk: 0 };
 
-        const mockDesks = [
-            { id: 1, name: "Agence Principale Centre Ville" },
-            { id: 2, name: "Agence ZI" }
-        ];
+    async function loadWilayas() {
+        const wilayaSelect = document.getElementById('wilaya');
+        if(!wilayaSelect) return;
+        wilayaSelect.innerHTML = '<option value="">Chargement...</option>';
+        try {
+            const response = await fetch(`${API_BASE_URL}/wilayas`);
+            const result = await response.json();
+            if (result.success) {
+                wilayaSelect.innerHTML = '<option value="">Sélectionnez votre wilaya...</option>';
+                result.data.forEach(w => {
+                    const option = document.createElement('option');
+                    option.value = w.id; 
+                    option.text = `${w.id} - ${w.name}`;
+                    wilayaSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
+            wilayaSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+        }
+    }
+
+    async function onWilayaChange() {
+        const wilayaId = document.getElementById('wilaya').value;
+        const communeSelect = document.getElementById('commune');
+        
+        if (!wilayaId) {
+            communeSelect.innerHTML = '<option value="">Sélectionnez d\'abord une wilaya</option>';
+            return;
+        }
+
+        communeSelect.innerHTML = '<option value="">Chargement...</option>';
+        try {
+            const response = await fetch(`${API_BASE_URL}/communes?wilaya_id=${wilayaId}`);
+            const result = await response.json();
+            if (result.success) {
+                communeSelect.innerHTML = '<option value="">Sélectionnez votre commune...</option>';
+                result.data.forEach(c => {
+                    const option = document.createElement('option');
+                    option.value = c.id;
+                    option.text = c.name;
+                    communeSelect.appendChild(option);
+                });
+            }
+        } catch (error) {
+            communeSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+        }
+        
+        onCommuneChange(); 
+    }
+
+    async function onCommuneChange() {
+        const wilayaId = document.getElementById('wilaya').value;
+        const communeId = document.getElementById('commune').value;
+        const deskSelect = document.getElementById('desk');
+        
+        if (deskSelect) {
+            if (!communeId) {
+                deskSelect.innerHTML = '<option value="">Sélectionnez d\'abord une commune</option>';
+            } else {
+                deskSelect.innerHTML = '<option value="">Chargement des bureaux...</option>';
+                try {
+                    const response = await fetch(`${API_BASE_URL}/centers?commune_id=${communeId}`);
+                    const result = await response.json();
+                    if (result.success && result.data.length > 0) {
+                        deskSelect.innerHTML = '<option value="">Sélectionnez un bureau Yalidine...</option>';
+                        result.data.forEach(center => {
+                            const option = document.createElement('option');
+                            option.value = center.center_id;
+                            option.text = center.name;
+                            deskSelect.appendChild(option);
+                        });
+                    } else {
+                        deskSelect.innerHTML = '<option value="">Aucun bureau dans cette commune</option>';
+                    }
+                } catch (error) {
+                    deskSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+                }
+            }
+        }
+
+        document.getElementById('summary-shipping').innerText = 'Calcul...';
+        if (!wilayaId || !communeId) {
+            currentShippingRates = { home: 0, desk: 0 };
+            updateOrderSummary();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/delivery-pricing?to_wilaya_id=${wilayaId}&commune_id=${communeId}`);
+            const result = await response.json();
+            if (result.success && result.data) {
+                currentShippingRates.home = result.data.homeDelivery || 0;
+                currentShippingRates.desk = result.data.deskDelivery || 0;
+            }
+        } catch (error) {
+            currentShippingRates = { home: 0, desk: 0 };
+        }
+        updateOrderSummary();
+    }
+
+        function updateOrderSummary() {
+        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const subtotalElement = document.getElementById('summary-subtotal');
+        if (subtotalElement) subtotalElement.innerText = subtotal + ' DZD';
+
+        const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
+        const shippingCost = currentShippingRates[deliveryType] || 0;
+        
+        const shippingElement = document.getElementById('summary-shipping');
+        const totalElement = document.getElementById('summary-total');
+
+        if (shippingCost > 0) {
+            if (shippingElement) shippingElement.innerText = shippingCost + ' DZD';
+            if (totalElement) totalElement.innerText = (subtotal + shippingCost) + ' DZD';
+        } else {
+            if (shippingElement) shippingElement.innerText = '- DZD';
+            if (totalElement) totalElement.innerText = subtotal + ' DZD';
+        }
+    }
 
         // --- STATE ---
         let state = {
@@ -724,8 +827,11 @@ function addToCart() {
         const firstName = document.getElementById('firstName').value.trim();
         const lastName = document.getElementById('lastName').value.trim();
         const phone = document.getElementById('phone').value.trim();
-        const wilaya = document.getElementById('wilaya').value;
-        const commune = document.getElementById('commune').value;
+        const wilayaSelect = document.getElementById('wilaya');
+const wilaya = wilayaSelect.options[wilayaSelect.selectedIndex]?.text || '';
+
+const communeSelect = document.getElementById('commune');
+const commune = communeSelect.options[communeSelect.selectedIndex]?.text || '';
         const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
         const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
 
@@ -810,6 +916,8 @@ function addToCart() {
 
         // Run on load
         document.addEventListener('DOMContentLoaded', initProduct);
+
+        loadWilayas();
 
     </script>
 </body>
