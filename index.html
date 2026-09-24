@@ -745,7 +745,30 @@
             }
         } 
 
-        document.addEventListener('DOMContentLoaded', initProduct);
+        async function fetchStockAndInit() {
+            try {
+                // 1. Le site demande les vrais chiffres au serveur Render
+                const response = await fetch(`${API_BASE_URL}/stock`);
+                const data = await response.json();
+                
+                if (data.success && data.stock) {
+                    // 2. On met à jour les quantités dans le HTML avec la mémoire du serveur
+                    PRODUCT.variants.forEach(variant => {
+                        if (data.stock[variant.name] !== undefined) {
+                            variant.stock = data.stock[variant.name];
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error("Erreur de connexion au stock central :", error);
+            }
+            
+            // 3. On génère l'affichage des couleurs après avoir reçu les vrais chiffres
+            initProduct();
+        }
+
+        // Quand la page s'ouvre, on lance notre nouvelle fonction
+        document.addEventListener('DOMContentLoaded', fetchStockAndInit);
 
     </script>
 </body>
