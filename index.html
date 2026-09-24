@@ -614,6 +614,7 @@ function addToCart() {
         
     function openModal() {
         if (state.cart.length === 0) return;
+        loadWilayas();
 
         const itemsContainer = document.getElementById('checkout-cart-items');
         itemsContainer.innerHTML = '';
@@ -922,7 +923,6 @@ const commune = communeSelect.options[communeSelect.selectedIndex]?.text || '';
         // Run on load
         document.addEventListener('DOMContentLoaded', initProduct);
 
-        loadWilayas();
 
     </script>
 </body>
