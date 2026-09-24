@@ -310,12 +310,16 @@
             ]
         };
 
-        const API_BASE_URL = 'https://eva-touch-cod-backend.onrender.com';
+        const API_BASE_URL = 'https://eva-touch-cod-backend.onrender.com/api';
         let currentShippingRates = { home: 0, desk: 0 };
 
     async function loadWilayas() {
         const wilayaSelect = document.getElementById('wilaya');
-        if(!wilayaSelect) return;
+        if (!wilayaSelect) return; // Sécurité : on s'arrête si le menu n'est pas trouvé
+        
+        // On évite de recharger si la liste est déjà pleine (plus de 1 option)
+        if (wilayaSelect.options.length > 1) return;
+
         wilayaSelect.innerHTML = '<option value="">Chargement...</option>';
         try {
             const response = await fetch(`${API_BASE_URL}/wilayas`);
@@ -332,7 +336,7 @@
         } catch (error) {
             wilayaSelect.innerHTML = '<option value="">Erreur de chargement</option>';
         }
-    }
+    } 
 
     async function onWilayaChange() {
         const wilayaId = document.getElementById('wilaya').value;
