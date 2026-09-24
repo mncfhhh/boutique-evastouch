@@ -289,18 +289,21 @@
                 const isOutOfStock = variant.stock === 0;
                 const isActive = state.selectedVariant.id === variant.id;
 
+                // Nouveau design commun pour TOUS les boutons (en stock ou non)
+                btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-center font-medium ${isActive ? 'border-gray-900 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 hover:border-gray-900 text-gray-700'}`;
+                
+                // Si rupture, on barre simplement le texte, mais le bouton reste normal
                 if (isOutOfStock) {
-                    btn.className = "relative w-full py-3 px-4 rounded-2xl border-2 border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed font-medium overflow-hidden";
-                    btn.disabled = true;
-                    btn.innerHTML = `<span class="relative z-10">${variant.name}</span><div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top right, transparent calc(50% - 1px), #d1d5db calc(50%), transparent calc(50% + 1px));"></div>`;
+                    btn.innerHTML = `<span style="text-decoration: line-through; opacity: 0.6;">${variant.name}</span>`;
                 } else {
-                    btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-center font-medium ${isActive ? 'border-gray-900 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 hover:border-gray-900 text-gray-700'}`;
                     btn.innerHTML = variant.name;
-                    btn.onclick = () => {
-                        state.selectedVariant = variant;
-                        initProduct();
-                    };
                 }
+                
+                // L'action au clic est la même pour tous : on change la photo
+                btn.onclick = () => {
+                    state.selectedVariant = variant;
+                    initProduct();
+                };
                 container.appendChild(btn);
             });
 
@@ -308,6 +311,22 @@
             const colorNameDisplay = document.getElementById('selected-color-name');
             if (colorNameDisplay) colorNameDisplay.innerText = state.selectedVariant.name;
             updateCartBadge();
+            // Logique du bouton Ajouter au Panier
+            const addToCartBtn = document.querySelector('button[onclick="addToCart()"]');
+            if (addToCartBtn) {
+                if (state.selectedVariant.stock === 0) {
+                    addToCartBtn.disabled = true;
+                    addToCartBtn.innerHTML = 'Rupture de stock';
+                    addToCartBtn.className = "flex-1 h-[52px] bg-gray-300 text-gray-500 rounded-2xl font-bold flex items-center justify-center cursor-not-allowed";
+                } else {
+                    addToCartBtn.disabled = false;
+                    addToCartBtn.innerHTML = `
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zM7 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0-3l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM5.21 6h14.65l-2.76 5H8.53L5.21 6z"/><path d="M12 2v3H9v2h3v3h2V7h3V5h-3V2z"/></svg>
+                        Ajouter au panier
+                    `;
+                    addToCartBtn.className = "flex-1 h-[52px] bg-black hover:bg-gray-800 text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-colors";
+                }
+            } 
         }
 
         function changeCurrentQty(change) {
