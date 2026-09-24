@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tablier de cuisine anti-taches et impermeable 🌸👩‍🍳 | Eva's Touch 🌸</title>
     
-    <!-- Polices Google : Poppins (Français) & Cairo (Arabe) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -78,21 +77,18 @@
 
     <main class="flex-grow max-w-2xl mx-auto px-4 py-8 lg:py-12 flex flex-col gap-8"> 
 
-        <!-- Product Details -->
         <div class="w-full flex flex-col justify-center"> 
             <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">Tablier de cuisine anti-taches et imperméable 🌸👩‍🍳</h1>
             <p class="text-lg text-gray-500 mb-6 font-cairo" dir="rtl">مئزر مطبخ مضاد للبقع و مقاوم للماء 👩‍🍳🌸</p>
             
             <div class="flex items-center gap-4 mb-6">
                 <span class="text-3xl font-bold text-eva-burgundy">1800 DZD</span>
-                <span class="text-xl text-gray-400 line-through"></span>
             </div>
 
             <p class="text-gray-600 mb-8 leading-relaxed">
                 Protégez vos vêtements avec élégance. Notre tablier imperméable et anti-taches est conçu pour le confort au quotidien. Taille ajustable, poches pratiques et tissu anti-taches et imperméable 😍🫶🏻.
             </p>
 
-             <!-- Image Gallery -->
         <div class="w-full flex flex-col gap-4 mt-6 mb-6"> 
             <div class="relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-white shadow-md border border-eva-pinkLight">
                 <span class="absolute top-4 left-4 bg-eva-burgundy text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider z-10 shadow-sm">Best Seller</span>
@@ -100,41 +96,33 @@
             </div>
         </div> 
 
-            <!-- Variant Selector -->
             <div class="mb-8">
                 <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3 flex justify-between">
                     <span>Couleur • اللون</span>
                     <span id="selected-color-name" class="text-eva-burgundy font-bold"></span>
                 </h3>
-                <div class="flex gap-4" id="variant-selector">
-                    <!-- Injected via JS -->
+                <div class="flex gap-4 flex-col" id="variant-selector">
                 </div>
             </div>
 
-            <!-- Buttons -->
             <div class="flex flex-col gap-4 mt-auto">
-    <!-- Ligne : Sélecteur de quantité + Ajouter au panier -->
-    <div class="flex items-center gap-3 w-full">
-        <!-- Boîte de quantité -->
-        <div class="flex items-center border border-gray-300 rounded-2xl bg-white px-4 py-3 h-[52px]">
-            <button onclick="changeCurrentQty(-1)" class="text-gray-500 hover:text-black text-xl font-medium px-2">&minus;</button>
-            <span id="display-current-qty" class="text-gray-900 font-medium text-lg px-4">1</span>
-            <button onclick="changeCurrentQty(1)" class="text-gray-500 hover:text-black text-xl font-medium px-2">+</button>
-        </div>
-        <!-- Bouton Ajouter au panier (Noir) -->
-        <button onclick="addToCart()" class="flex-1 h-[52px] bg-black hover:bg-gray-800 text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-colors">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zM7 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0-3l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM5.21 6h14.65l-2.76 5H8.53L5.21 6z"/><path d="M12 2v3H9v2h3v3h2V7h3V5h-3V2z"/></svg>
-            Ajouter au panier
-        </button>
-    </div>
+                <div class="flex items-center gap-3 w-full">
+                    <div class="flex items-center border border-gray-300 rounded-2xl bg-white px-4 py-3 h-[52px]">
+                        <button onclick="changeCurrentQty(-1)" class="text-gray-500 hover:text-black text-xl font-medium px-2">&minus;</button>
+                        <span id="display-current-qty" class="text-gray-900 font-medium text-lg px-4">1</span>
+                        <button onclick="changeCurrentQty(1)" class="text-gray-500 hover:text-black text-xl font-medium px-2">+</button>
+                    </div>
+                    <button onclick="addToCart()" class="flex-1 h-[52px] bg-black hover:bg-gray-800 text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-colors">
+                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zM7 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0-3l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM5.21 6h14.65l-2.76 5H8.53L5.21 6z"/><path d="M12 2v3H9v2h3v3h2V7h3V5h-3V2z"/></svg>
+                        Ajouter au panier
+                    </button>
+                </div>
 
-    <!-- Bouton Commander Maintenant (Bordeaux) -->
-    <button onclick="openModal()" class="w-full py-4 bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold transition-all text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-    Voir le panier | عرض السلة
-</button> 
-</div>
+                <button onclick="openModal()" class="w-full py-4 bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold transition-all text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                    Voir le panier | عرض السلة
+                </button> 
+            </div>
             
-            <!-- Trust Badges -->
             <div class="mt-8 grid grid-cols-3 gap-4 text-center text-sm text-gray-600 font-medium">
                 <div class="flex flex-col items-center gap-2">
                     <div class="bg-eva-pinkLight p-3 rounded-full text-eva-burgundy"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg></div>
@@ -152,14 +140,10 @@
         </div>
     </main>
 
-    <!-- CHECKOUT MODAL -->
     <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
-        <!-- Overlay -->
         <div class="absolute inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
         
-        <!-- Modal Content -->
-        <div class="absolute inset-x-0 bottom-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-white w-full md:w-full md:max-w-2xl md:rounded-3xl rounded-t-3xl shadow-2xl flex flex-col max-h-[95vh] md:max-h-[90vh] overflow-hidden modal-content-enter max-h-[90vh] overflow-y-auto
-">
+        <div class="absolute inset-x-0 bottom-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2 bg-white w-full md:max-w-2xl md:rounded-3xl rounded-t-3xl shadow-2xl flex flex-col max-h-[95vh] md:max-h-[90vh] overflow-hidden modal-content-enter overflow-y-auto">
             
             <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-eva-beige">
                 <h2 class="text-xl font-bold text-eva-burgundy">Finaliser la commande</h2>
@@ -170,7 +154,6 @@
 
             <div class="p-6 overflow-y-auto hide-scrollbar flex-grow bg-white">
                 
-                <!-- Success State -->
                 <div id="success-state" class="hidden flex-col items-center justify-center py-12 text-center">
                     <div class="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner">
                         <svg class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
@@ -180,68 +163,49 @@
                     <button onclick="closeModal()" class="bg-eva-burgundy hover:bg-eva-burgundyLight text-white px-10 py-4 rounded-xl font-bold transition-colors w-full md:w-auto shadow-lg shadow-eva-pink">Retourner à la boutique</button>
                 </div>
 
-                <!-- Form -->
                 <form id="checkout-form" class="space-y-8">
                     
-                    <!-- Liste des Produits du Panier (injectée par JS) -->
-    <div id="checkout-cart-items" class="flex flex-col gap-3">
-        <!-- Les articles apparaîtront ici -->
-    </div> 
+                    <div id="checkout-cart-items" class="flex flex-col gap-3"></div> 
 
-                    <!-- Client Info -->
                     <div>
                         <h3 class="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider flex items-center gap-2">
                             <span class="w-6 h-0.5 bg-eva-burgundy rounded"></span> Informations • معلوماتك
                         </h3>
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <input type="text" id="firstName" placeholder="Prénom • الاسم" required class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy focus:ring-0 outline-none transition-all bg-gray-50 focus:bg-white text-gray-900 placeholder-gray-400 font-medium" required>
-                            <input type="text" id="lastName" placeholder="Nom • اللقب" required class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy focus:ring-0 outline-none transition-all bg-gray-50 focus:bg-white text-gray-900 placeholder-gray-400 font-medium" required>
+                            <input type="text" id="firstName" placeholder="Prénom • الاسم" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
+                            <input type="text" id="lastName" placeholder="Nom • اللقب" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
                         </div>
                         <div>
-                            <input type="tel" id="phone" placeholder="Téléphone (ex: 05...)" required class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy focus:ring-0 outline-none transition-all bg-gray-50 focus:bg-white text-gray-900 placeholder-gray-400 font-medium" required>
-                            <div id="phone-error" class="hidden mt-2 p-3 bg-red-50 text-red-600 rounded-lg text-sm font-medium border border-red-100">
-                                ‼️ Impossible de confirmer la commande, veuillez vérifier vos informations. Merci 🫶🏻🌸
-                            </div>
+                            <input type="tel" id="phone" placeholder="Téléphone (ex: 05...)" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
                         </div>
                     </div>
 
-                    <!-- Location -->
                     <div>
                         <h3 class="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider flex items-center gap-2">
                             <span class="w-6 h-0.5 bg-eva-burgundy rounded"></span> Destination • الوجهة
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div class="relative">
-                                <select id="wilaya" onchange="onWilayaChange()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none transition-all bg-gray-50 appearance-none font-medium text-gray-900" required>
+                                <select id="wilaya" onchange="onWilayaChange()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 appearance-none font-medium text-gray-900" required>
                                     <option value="" disabled selected>Wilaya • الولاية</option>
-                                    <!-- Filled by JS -->
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                </div>
                             </div>
                             <div class="relative">
-                                <select id="commune" onchange="onCommuneChange()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none transition-all bg-gray-50 appearance-none disabled:opacity-50 disabled:bg-gray-100 font-medium text-gray-900" disabled required>
+                                <select id="commune" onchange="onCommuneChange()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 appearance-none disabled:opacity-50 font-medium text-gray-900" disabled required>
                                     <option value="" disabled selected>Commune • البلدية</option>
-                                    <!-- Filled by JS -->
                                 </select>
-                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500">
-                                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Delivery Mode -->
                     <div>
                         <h3 class="text-sm font-bold text-gray-900 mb-4 uppercase tracking-wider flex items-center gap-2">
                             <span class="w-6 h-0.5 bg-eva-burgundy rounded"></span> Livraison • التوصيل
                         </h3>
                         <div class="space-y-4">
-                            <!-- Desk -->
                             <div class="relative">
-                                <label id="label-desk" class="flex items-center p-5 border-2 border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 transition-all opacity-50 relative bg-white">
-                                    <input type="radio" name="deliveryType" value="desk" class="eva-radio mr-4" disabled>
+                                <label id="label-desk" class="flex items-center p-5 border-2 border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 opacity-50 bg-white">
+                                    <input type="radio" name="deliveryType" value="desk" class="eva-radio mr-4" disabled onchange="handleDeliverySelection()">
                                     <div class="flex-grow">
                                         <p class="font-bold text-gray-900">Bureau Yalidine • مكتب ياليدين</p>
                                         <p id="desk-status" class="text-sm text-gray-500 mt-0.5">Veuillez sélectionner une commune</p>
@@ -255,10 +219,9 @@
                                 </div>
                             </div>
 
-                            <!-- Home -->
                             <div class="relative">
-                                <label id="label-home" class="flex items-center p-5 border-2 border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 transition-all opacity-50 bg-white">
-                                    <input type="radio" name="deliveryType" value="home" class="eva-radio mr-4" disabled>
+                                <label id="label-home" class="flex items-center p-5 border-2 border-gray-100 rounded-xl cursor-pointer hover:bg-gray-50 opacity-50 bg-white">
+                                    <input type="radio" name="deliveryType" value="home" class="eva-radio mr-4" disabled onchange="handleDeliverySelection()">
                                     <div class="flex-grow">
                                         <p class="font-bold text-gray-900">À domicile • للمنزل</p>
                                         <p class="text-sm text-gray-500 mt-0.5">Livraison jusqu'à votre porte</p>
@@ -272,32 +235,33 @@
                         </div>
                     </div> 
 
-                    <!-- Modal Footer (Maintenant à la vraie fin du formulaire) -->
-        <div id="modal-footer" class="p-6 bg-white border-t border-gray-100 mt-4">
-            <div class="flex justify-between items-center mb-2 text-sm font-medium text-gray-600">
-                <span>Sous-total</span>
-                <span id="summary-subtotal">0 DZD</span>
-            </div>
-            <div class="flex justify-between items-center mb-4 text-sm font-medium text-gray-600">
-                <span>Frais de livraison</span>
-                <span id="summary-shipping" class="text-eva-burgundy font-bold">0 DZD</span>
-            </div>
-            <div class="flex justify-between items-center mb-6">
-                <span class="text-lg font-bold text-gray-900">TOTAL</span>
-                <span class="text-2xl font-bold text-eva-burgundy" id="summary-total">0 DZD</span>
-            </div>
-            <button type="button" id="submit-order-btn" onclick="submitOrder()" class="w-full h-[52px] bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold transition-colors flex items-center justify-center mt-6">
-                <span id="submit-text">CONFIRMER VOTRE COMMANDE / أكد طلبك</span>
-                <span id="submit-loader" class="loader hidden"></span>
-            </button>
-        </div> 
+                    <div id="modal-footer" class="p-6 bg-white border-t border-gray-100 mt-4">
+                        <div class="flex justify-between items-center mb-2 text-sm font-medium text-gray-600">
+                            <span>Sous-total</span>
+                            <span id="summary-subtotal">0 DZD</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-4 text-sm font-medium text-gray-600">
+                            <span>Frais de livraison</span>
+                            <span id="summary-shipping" class="text-eva-burgundy font-bold">0 DZD</span>
+                        </div>
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-lg font-bold text-gray-900">TOTAL</span>
+                            <span class="text-2xl font-bold text-eva-burgundy" id="summary-total">0 DZD</span>
+                        </div>
+                        <button type="button" id="submit-order-btn" onclick="submitOrder()" class="w-full h-[52px] bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold flex items-center justify-center mt-6">
+                            <span id="submit-text">CONFIRMER VOTRE COMMANDE / أكد طلبك</span>
+                            <span id="submit-loader" class="loader hidden"></span>
+                        </button>
+                    </div> 
                     
                 </form> 
             </div> 
+        </div>
+    </div>
 
     <script>
-        // --- CONSTANTES & DATA ---
-        const API_BASE_URL = "https://eva-touch-cod-backend.onrender.com/api"; 
+        const API_BASE_URL = 'https://eva-touch-cod-backend.onrender.com/api';
+        let currentShippingRates = { home: 0, desk: 0 };
 
         const PRODUCT = {
             id: 'tablier-cuisine',
@@ -310,465 +274,331 @@
             ]
         };
 
-        const API_BASE_URL = 'https://eva-touch-cod-backend.onrender.com/api';
-        let currentShippingRates = { home: 0, desk: 0 };
-
-    async function loadWilayas() {
-        const wilayaSelect = document.getElementById('wilaya');
-        if (!wilayaSelect) return; // Sécurité : on s'arrête si le menu n'est pas trouvé
-        
-        // On évite de recharger si la liste est déjà pleine (plus de 1 option)
-        if (wilayaSelect.options.length > 1) return;
-
-        wilayaSelect.innerHTML = '<option value="">Chargement...</option>';
-        try {
-            const response = await fetch(`${API_BASE_URL}/wilayas`);
-            const result = await response.json();
-            if (result.success) {
-                wilayaSelect.innerHTML = '<option value="">Sélectionnez votre wilaya...</option>';
-                result.data.forEach(w => {
-                    const option = document.createElement('option');
-                    option.value = w.id; 
-                    option.text = `${w.id} - ${w.name}`;
-                    wilayaSelect.appendChild(option);
-                });
-            }
-        } catch (error) {
-            wilayaSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-        }
-    } 
-
-    async function onWilayaChange() {
-        const wilayaId = document.getElementById('wilaya').value;
-        const communeSelect = document.getElementById('commune');
-        
-        if (!wilayaId) {
-            communeSelect.innerHTML = '<option value="">Sélectionnez d\'abord une wilaya</option>';
-            return;
-        }
-
-        communeSelect.innerHTML = '<option value="">Chargement...</option>';
-        try {
-            const response = await fetch(`${API_BASE_URL}/communes?wilaya_id=${wilayaId}`);
-            const result = await response.json();
-            if (result.success) {
-                communeSelect.innerHTML = '<option value="">Sélectionnez votre commune...</option>';
-                result.data.forEach(c => {
-                    const option = document.createElement('option');
-                    option.value = c.id;
-                    option.text = c.name;
-                    communeSelect.appendChild(option);
-                });
-            }
-        } catch (error) {
-            communeSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-        }
-        
-        onCommuneChange(); 
-    }
-
-    async function onCommuneChange() {
-        const wilayaId = document.getElementById('wilaya').value;
-        const communeId = document.getElementById('commune').value;
-        const deskSelect = document.getElementById('desk');
-        
-        if (deskSelect) {
-            if (!communeId) {
-                deskSelect.innerHTML = '<option value="">Sélectionnez d\'abord une commune</option>';
-            } else {
-                deskSelect.innerHTML = '<option value="">Chargement des bureaux...</option>';
-                try {
-                    const response = await fetch(`${API_BASE_URL}/centers?commune_id=${communeId}`);
-                    const result = await response.json();
-                    if (result.success && result.data.length > 0) {
-                        deskSelect.innerHTML = '<option value="">Sélectionnez un bureau Yalidine...</option>';
-                        result.data.forEach(center => {
-                            const option = document.createElement('option');
-                            option.value = center.center_id;
-                            option.text = center.name;
-                            deskSelect.appendChild(option);
-                        });
-                    } else {
-                        deskSelect.innerHTML = '<option value="">Aucun bureau dans cette commune</option>';
-                    }
-                } catch (error) {
-                    deskSelect.innerHTML = '<option value="">Erreur de chargement</option>';
-                }
-            }
-        }
-
-        document.getElementById('summary-shipping').innerText = 'Calcul...';
-        if (!wilayaId || !communeId) {
-            currentShippingRates = { home: 0, desk: 0 };
-            updateOrderSummary();
-            return;
-        }
-
-        try {
-            const response = await fetch(`${API_BASE_URL}/delivery-pricing?to_wilaya_id=${wilayaId}&commune_id=${communeId}`);
-            const result = await response.json();
-            if (result.success && result.data) {
-                currentShippingRates.home = result.data.homeDelivery || 0;
-                currentShippingRates.desk = result.data.deskDelivery || 0;
-            }
-        } catch (error) {
-            currentShippingRates = { home: 0, desk: 0 };
-        }
-        updateOrderSummary();
-    }
-
-        function updateOrderSummary() {
-        const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-        const subtotalElement = document.getElementById('summary-subtotal');
-        if (subtotalElement) subtotalElement.innerText = subtotal + ' DZD';
-
-        const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
-        const shippingCost = currentShippingRates[deliveryType] || 0;
-        
-        const shippingElement = document.getElementById('summary-shipping');
-        const totalElement = document.getElementById('summary-total');
-
-        if (shippingCost > 0) {
-            if (shippingElement) shippingElement.innerText = shippingCost + ' DZD';
-            if (totalElement) totalElement.innerText = (subtotal + shippingCost) + ' DZD';
-        } else {
-            if (shippingElement) shippingElement.innerText = '- DZD';
-            if (totalElement) totalElement.innerText = subtotal + ' DZD';
-        }
-    }
-
-        // --- STATE ---
         let state = {
             selectedVariant: PRODUCT.variants[0],
             currentQty: 1,
-            cart: JSON.parse(localStorage.getItem('evastouch_cart')) || [],
-            deliveryPrices: { homeDelivery: 0, deskDelivery: 0 },
-            selectedWilaya: null,
-            selectedCommune: null
+            cart: JSON.parse(localStorage.getItem('evastouch_cart')) || []
         };
 
-// --- INITIALISATION UI ---
         function initProduct() {
             const container = document.getElementById('variant-selector');
             container.innerHTML = '';
             
-            // Force le conteneur à afficher les éléments en colonne (vertical)
-            container.className = 'flex flex-col gap-3 w-full mt-4';
+            PRODUCT.variants.forEach(variant => {
+                const btn = document.createElement('button');
+                const isOutOfStock = variant.stock === 0;
+                const isActive = state.selectedVariant.id === variant.id;
 
-           PRODUCT.variants.forEach(variant => {
-            const btn = document.createElement('button');
-            const isOutOfStock = variant.stock === 0;
-            const isActive = state.selectedVariant.id === variant.id;
-
-            if (isOutOfStock) {
-                // Bouton GRISÉ et BARRÉ (Rupture de stock)
-                btn.className = "relative w-full py-3 px-4 rounded-2xl border-2 border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed font-medium overflow-hidden transition-all duration-300";
-                btn.disabled = true; // Empêche le clic
-                btn.innerHTML = `
-                    <span class="relative z-10">${variant.name}</span>
-                    <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top right, transparent calc(50% - 1px), #d1d5db calc(50%), transparent calc(50% + 1px));"></div>
-                `;
-            } else {
-                // Bouton NORMAL (En stock)
-                btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-center font-medium ${isActive ? 'border-gray-900 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 hover:border-gray-900 text-gray-700'}`;
-                btn.innerHTML = variant.name;
-                btn.onclick = () => {
-                    state.selectedVariant = variant;
-                    initProduct(); // Rafraîchit l'affichage avec la nouvelle couleur
-                };
-            }
-            container.appendChild(btn);
-        });
+                if (isOutOfStock) {
+                    btn.className = "relative w-full py-3 px-4 rounded-2xl border-2 border-gray-200 bg-gray-50 text-gray-400 cursor-not-allowed font-medium overflow-hidden";
+                    btn.disabled = true;
+                    btn.innerHTML = `<span class="relative z-10">${variant.name}</span><div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(to top right, transparent calc(50% - 1px), #d1d5db calc(50%), transparent calc(50% + 1px));"></div>`;
+                } else {
+                    btn.className = `w-full py-3 px-4 rounded-2xl border-2 transition-all duration-300 text-center font-medium ${isActive ? 'border-gray-900 bg-gray-50 text-gray-900 shadow-sm' : 'border-gray-200 hover:border-gray-900 text-gray-700'}`;
+                    btn.innerHTML = variant.name;
+                    btn.onclick = () => {
+                        state.selectedVariant = variant;
+                        initProduct();
+                    };
+                }
+                container.appendChild(btn);
+            });
 
             document.getElementById('main-image').src = state.selectedVariant.img;
-            
-            // Met à jour le petit texte "Couleur sélectionnée" au-dessus si tu l'as toujours
             const colorNameDisplay = document.getElementById('selected-color-name');
             if (colorNameDisplay) colorNameDisplay.innerText = state.selectedVariant.name;
+            updateCartBadge();
         }
 
-       // --- QUANTITÉ & PANIER ---
         function changeCurrentQty(change) {
             let newQty = state.currentQty + change;
             if (newQty >= 1) {
                 state.currentQty = newQty;
-                const display = document.getElementById('display-current-qty');
-                if (display) display.innerText = state.currentQty;
+                document.getElementById('display-current-qty').innerText = state.currentQty;
             }
         }
 
-function addToCart() {
-        if (!state.selectedVariant) {
-            alert("Veuillez sélectionner une couleur.");
-            return;
+        function addToCart() {
+            if (!state.selectedVariant) return;
+
+            const currentVariant = PRODUCT.variants.find(v => v.name === state.selectedVariant.name);
+            const existingItem = state.cart.find(i => i.variant === state.selectedVariant.name);
+            
+            const qtyInCart = existingItem ? existingItem.qty : 0;
+            const requestedQty = parseInt(state.currentQty);
+
+            if (currentVariant.stock !== undefined && (qtyInCart + requestedQty) > currentVariant.stock) {
+                alert(`Désolé, il ne reste que ${currentVariant.stock} article(s) en stock pour cette couleur.`);
+                return; 
+            }
+
+            const item = {
+                id: PRODUCT.id,
+                name: PRODUCT.name,
+                variant: state.selectedVariant.name,
+                price: PRODUCT.price,
+                img: state.selectedVariant.img,
+                qty: requestedQty
+            };
+
+            if (existingItem) {
+                existingItem.qty += requestedQty;
+            } else {
+                state.cart.push(item);
+            }
+
+            state.currentQty = 1;
+            document.getElementById('display-current-qty').innerText = '1';
+
+            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+            updateCartBadge();
+            alert("Article ajouté au panier !");
+        } 
+
+        function updateCartBadge() {
+            const badge = document.getElementById('cart-count');
+            if (!badge) return;
+            const totalItems = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
+            if (totalItems > 0) {
+                badge.innerText = totalItems;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
         }
 
-        const currentVariant = PRODUCT.variants.find(v => v.name === state.selectedVariant.name);
-        const existingItem = state.cart.find(i => i.variant === state.selectedVariant.name);
-        
-        const qtyInCart = existingItem ? existingItem.qty : 0;
-        const requestedQty = parseInt(state.currentQty);
-
-        // LE BLOCAGE EST ICI : On vérifie si l'ajout dépasse le stock
-        if (currentVariant.stock !== undefined && (qtyInCart + requestedQty) > currentVariant.stock) {
-            alert(`Désolé, il ne reste que ${currentVariant.stock} article(s) en stock pour cette couleur.`);
-            return; 
+        function removeFromCart(variantName) {
+            state.cart = state.cart.filter(item => item.variant !== variantName);
+            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+            updateCartBadge();
+            if (state.cart.length === 0) {
+                closeModal();
+            } else {
+                openModal();
+            }
         }
-
-        const item = {
-            id: PRODUCT.id,
-            name: PRODUCT.name,
-            variant: state.selectedVariant.name,
-            price: PRODUCT.price,
-            img: state.selectedVariant.img,
-            qty: requestedQty
-        };
-
-        if (existingItem) {
-            existingItem.qty += requestedQty;
-        } else {
-            state.cart.push(item);
-        }
-
-        state.currentQty = 1;
-        const displayQty = document.getElementById('display-current-qty');
-        if (displayQty) displayQty.innerText = '1';
-
-        localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-        if (typeof updateCartBadge === 'function') updateCartBadge();
-        
-        const cartSidebar = document.getElementById('cart-sidebar');
-        if (cartSidebar) cartSidebar.classList.remove('translate-x-full');
-    } 
-
-    function addToCartAndCheckout() {
-        addToCart();
-        openModal();
-    }
-
-    function updateCartBadge() {
-        const badge = document.getElementById('cart-count');
-        if (!badge) return;
-        
-        // Calcule le total des articles
-        const totalItems = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
-        
-        if (totalItems > 0) {
-            badge.innerText = totalItems;
-            badge.classList.remove('hidden');
-        } else {
-            badge.classList.add('hidden');
-        }
-    }
-
-    // Nouvelle fonction pour la corbeille
-    function removeFromCart(variantName) {
-        state.cart = state.cart.filter(item => item.variant !== variantName);
-        localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-        updateCartBadge();
-        
-        if (state.cart.length === 0) {
-            closeModal(); // Ferme le pop-up si le panier est vide
-        } else {
-            openModal(); // Rafraîchit l'affichage
-        }
-    }
 
         function updateCartItemQty(variantName, change) {
-        const itemIndex = state.cart.findIndex(i => i.variant === variantName);
-        if (itemIndex > -1) {
-            const currentVariant = PRODUCT.variants.find(v => v.name === variantName);
-            const newQty = state.cart[itemIndex].qty + change;
+            const itemIndex = state.cart.findIndex(i => i.variant === variantName);
+            if (itemIndex > -1) {
+                const currentVariant = PRODUCT.variants.find(v => v.name === variantName);
+                const newQty = state.cart[itemIndex].qty + change;
 
-            if (newQty > 0) {
-                // Vérifier le stock disponible avant d'augmenter la quantité
-                if (change > 0 && currentVariant.stock !== undefined && newQty > currentVariant.stock) {
-                    alert(`Désolé, il ne reste que ${currentVariant.stock} article(s) en stock pour cette couleur.`);
-                    return;
+                if (newQty > 0) {
+                    if (change > 0 && currentVariant.stock !== undefined && newQty > currentVariant.stock) {
+                        alert(`Désolé, il ne reste que ${currentVariant.stock} article(s) en stock pour cette couleur.`);
+                        return;
+                    }
+                    state.cart[itemIndex].qty = newQty;
+                } else {
+                    state.cart.splice(itemIndex, 1);
                 }
-                state.cart[itemIndex].qty = newQty;
-            } else {
-                // Si la quantité tombe à 0 ou moins, on supprime l'article du panier
-                state.cart.splice(itemIndex, 1);
+                
+                localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+                updateCartBadge();
+                openModal(); 
+            }
+        } 
+            
+        function openModal() {
+            if (state.cart.length === 0) {
+                alert("Votre panier est vide.");
+                return;
             }
             
-            // On sauvegarde dans le navigateur
-            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+            const itemsContainer = document.getElementById('checkout-cart-items');
+            itemsContainer.innerHTML = '';
             
-            // On met à jour l'affichage global
-            if (typeof updateCartBadge === 'function') updateCartBadge();
-            
-            // NOUVEAU : On met à jour le total général du panier
-            const newTotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            const totalElement = document.getElementById('summary-subtotal');
-            if (totalElement) {
-                totalElement.innerText = newTotal + ' DZD';
-            }
-            // On rafraîchit le total final (avec livraison) s'il y a une fonction pour ça
-            if (typeof updateOrderSummary === 'function') updateOrderSummary();
-            
-            // On relance la modale pour afficher les nouvelles quantités !
-            openModal(); 
-        }
-    } 
-        
-    function openModal() {
-        if (state.cart.length === 0) return;
-        loadWilayas();
+            state.cart.forEach(item => {
+                const itemHTML = `
+                <div class="bg-eva-beige p-3 rounded-2xl flex items-center gap-4 border border-eva-pinkLight relative">
+                    <img src="${item.img}" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex-grow">
+                        <h4 class="font-semibold text-gray-900 text-sm">${item.name}</h4>
+                        <p class="text-sm text-eva-burgundy font-medium">${item.variant}</p>
+                        <div class="flex items-center gap-3 mt-1">
+                            <button type="button" onclick="updateCartItemQty('${item.variant}', -1)" class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
+                            </button>
+                            <span class="text-sm font-bold text-gray-800 w-4 text-center">${item.qty}</span>
+                            <button type="button" onclick="updateCartItemQty('${item.variant}', 1)" class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-right flex flex-col items-end justify-between h-full">
+                        <button type="button" onclick="removeFromCart('${item.variant}')" class="text-gray-400 hover:text-red-500 p-1 mb-1">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </button>
+                        <p class="font-bold text-gray-900">${item.price * item.qty} DZD</p>
+                    </div>
+                </div>`;
+                itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
+            });
 
-        const itemsContainer = document.getElementById('checkout-cart-items');
-        itemsContainer.innerHTML = '';
-        
-        state.cart.forEach(item => {
-            const itemHTML = `
-            <div class="bg-eva-beige p-3 rounded-2xl flex items-center gap-4 border border-eva-pinkLight relative">
-                <img src="${item.img}" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-gray-100">
-                <div class="flex-grow">
-                    <h4 class="font-semibold text-gray-900 text-sm">${item.name}</h4>
-                    <p class="text-sm text-eva-burgundy font-medium">${item.variant}</p>
-                    <div class="flex items-center gap-3 mt-1">
-    <button type="button" onclick="updateCartItemQty('${item.variant}', -1)" class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" /></svg>
-    </button>
-    <span class="text-sm font-bold text-gray-800 w-4 text-center">${item.qty}</span>
-    <button type="button" onclick="updateCartItemQty('${item.variant}', 1)" class="w-7 h-7 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-    </button>
-</div>
-</div>
-                <div class="text-right flex flex-col items-end justify-between h-full">
-                    <!-- BOUTON CORBEILLE -->
-                    <button type="button" onclick="removeFromCart('${item.variant}')" class="text-gray-400 hover:text-red-500 p-1 mb-1 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                    </button>
-                    <p class="font-bold text-gray-900">${item.price * item.qty} DZD</p>
-                </div>
-            </div>`;
-            
-            itemsContainer.insertAdjacentHTML('beforeend', itemHTML);
-        });
+            document.getElementById('checkout-modal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.getElementById('success-state').classList.add('hidden');
+            document.getElementById('checkout-form').classList.remove('hidden');
+            document.getElementById('modal-footer').classList.remove('hidden');
 
-        document.getElementById('checkout-modal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-
-        document.getElementById('success-state').classList.add('hidden');
-        document.getElementById('checkout-form').classList.remove('hidden');
-        
-        const modalFooter = document.getElementById('modal-footer');
-        if (modalFooter) modalFooter.classList.remove('hidden');
-
-        loadWilayas();
-        if (typeof updateTotal === 'function') {
-            updateTotal();
-        }
-    } 
+            loadWilayas();
+            updateOrderSummary();
+        } 
 
         function closeModal() {
             document.getElementById('checkout-modal').classList.add('hidden');
             document.body.style.overflow = 'auto';
         }
 
-        // --- LOGIQUE METIER YALIDINE ---
-        function loadWilayas() {
-            const select = document.getElementById('wilaya');
-            if(select.options.length > 1) return; // Already loaded
+        // --- YALIDINE API LOGIC ---
+        async function loadWilayas() {
+            const wilayaSelect = document.getElementById('wilaya');
+            if (!wilayaSelect || wilayaSelect.options.length > 1) return; 
 
-            // Mock fetch
-            setTimeout(() => {
-                mockWilayas.forEach(w => {
-                    select.innerHTML += `<option value="${w.id}">${w.id} - ${w.name}</option>`;
-                });
-            }, 200);
-        }
+            wilayaSelect.innerHTML = '<option value="">Chargement...</option>';
+            try {
+                const response = await fetch(`${API_BASE_URL}/wilayas`);
+                const result = await response.json();
+                if (result.success) {
+                    wilayaSelect.innerHTML = '<option value="" disabled selected>Wilaya • الولاية</option>';
+                    result.data.forEach(w => {
+                        const option = document.createElement('option');
+                        option.value = w.id; 
+                        option.text = `${w.id} - ${w.name}`;
+                        wilayaSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                wilayaSelect.innerHTML = '<option value="">Erreur de chargement</option>';
+            }
+        } 
 
-        document.getElementById('wilaya').addEventListener('change', function(e) {
-            const wId = e.target.value;
-            state.selectedWilaya = mockWilayas.find(w => w.id == wId);
+        async function onWilayaChange() {
+            const wilayaId = document.getElementById('wilaya').value;
+            const communeSelect = document.getElementById('commune');
             
-            const comSelect = document.getElementById('commune');
-            comSelect.innerHTML = `<option value="" disabled selected>Chargement...</option>`;
-            comSelect.disabled = true;
             resetDelivery();
-
-            // Mock fetch communes
-            setTimeout(() => {
-                const communes = mockCommunes[wId] || [];
-                comSelect.innerHTML = `<option value="" disabled selected>Commune • البلدية</option>`;
-                communes.forEach(c => {
-                    // Storing has_stop_desk in data attribute for easy access
-                    comSelect.innerHTML += `<option value="${c.id}" data-stopdesk="${c.has_stop_desk}">${c.name}</option>`;
-                });
-                comSelect.disabled = false;
-            }, 300);
-        });
-
-        document.getElementById('commune').addEventListener('change', function(e) {
-            const option = this.options[this.selectedIndex];
-            const hasStopDesk = parseInt(option.getAttribute('data-stopdesk'));
             
-            state.selectedCommune = { id: this.value, name: option.text, has_stop_desk: hasStopDesk };
-            
-            const radioDesk = document.querySelector('input[value="desk"]');
-            const radioHome = document.querySelector('input[value="home"]');
-            const labelDesk = document.getElementById('label-desk');
-            const labelHome = document.getElementById('label-home');
-            const deskStatus = document.getElementById('desk-status');
-
-            // Always enable Home delivery
-            radioHome.disabled = false;
-            labelHome.classList.remove('opacity-50');
-
-            // Stop Desk Business Logic
-            if (hasStopDesk === 1) {
-                radioDesk.disabled = false;
-                labelDesk.classList.remove('opacity-50');
-                labelDesk.classList.remove('bg-gray-100');
-                deskStatus.innerText = "Récupération en agence";
-                deskStatus.className = "text-sm text-green-600 font-medium mt-0.5";
-                loadDesks();
-            } else {
-                radioDesk.disabled = true;
-                radioDesk.checked = false;
-                labelDesk.classList.add('opacity-50', 'bg-gray-100');
-                deskStatus.innerText = "Indisponible dans votre commune";
-                deskStatus.className = "text-sm text-red-500 font-bold mt-0.5";
-                
-                // Force select home
-                radioHome.checked = true;
-                handleDeliverySelection();
+            if (!wilayaId) {
+                communeSelect.innerHTML = '<option value="" disabled selected>Sélectionnez d\'abord une wilaya</option>';
+                communeSelect.disabled = true;
+                return;
             }
 
-            // Mock fetch pricing
-            setTimeout(() => {
-                state.deliveryPrices = { homeDelivery: 800, deskDelivery: 500 };
-                document.getElementById('price-home').innerText = "800 DZD";
-                if(hasStopDesk === 1) document.getElementById('price-desk').innerText = "500 DZD";
-                updateTotals();
-            }, 300);
-        });
+            communeSelect.disabled = false;
+            communeSelect.innerHTML = '<option value="" disabled selected>Chargement...</option>';
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/communes?wilaya_id=${wilayaId}`);
+                const result = await response.json();
+                if (result.success) {
+                    communeSelect.innerHTML = '<option value="" disabled selected>Commune • البلدية</option>';
+                    result.data.forEach(c => {
+                        const option = document.createElement('option');
+                        option.value = c.id;
+                        option.text = c.name;
+                        communeSelect.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                communeSelect.innerHTML = '<option value="" disabled selected>Erreur de chargement</option>';
+            }
+            onCommuneChange(); 
+        }
 
-        function loadDesks() {
-            const select = document.getElementById('desk');
-            select.innerHTML = `<option value="" disabled selected>📍 Choisir le bureau Yalidine...</option>`;
-            mockDesks.forEach(d => select.innerHTML += `<option value="${d.id}">${d.name}</option>`);
+        async function onCommuneChange() {
+            const wilayaId = document.getElementById('wilaya').value;
+            const communeId = document.getElementById('commune').value;
+            const deskSelect = document.getElementById('desk');
+            
+            resetDelivery();
+
+            if (deskSelect) {
+                if (!communeId) {
+                    deskSelect.innerHTML = '<option value="" disabled selected>Sélectionnez d\'abord une commune</option>';
+                } else {
+                    deskSelect.innerHTML = '<option value="" disabled selected>Chargement des bureaux...</option>';
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/centers?commune_id=${communeId}`);
+                        const result = await response.json();
+                        if (result.success && result.data.length > 0) {
+                            deskSelect.innerHTML = '<option value="" disabled selected>📍 Choisir le bureau Yalidine...</option>';
+                            result.data.forEach(center => {
+                                const option = document.createElement('option');
+                                option.value = center.center_id;
+                                option.text = center.name;
+                                deskSelect.appendChild(option);
+                            });
+                            
+                            // Activer l'option Desk si des bureaux existent
+                            document.querySelector('input[value="desk"]').disabled = false;
+                            document.getElementById('label-desk').classList.remove('opacity-50', 'bg-gray-100');
+                            document.getElementById('desk-status').innerText = "Récupération en agence";
+                            document.getElementById('desk-status').className = "text-sm text-green-600 font-medium mt-0.5";
+                        } else {
+                            deskSelect.innerHTML = '<option value="" disabled selected>Aucun bureau dans cette commune</option>';
+                            document.querySelector('input[value="desk"]').disabled = true;
+                            document.getElementById('label-desk').classList.add('opacity-50', 'bg-gray-100');
+                            document.getElementById('desk-status').innerText = "Indisponible dans votre commune";
+                            document.getElementById('desk-status').className = "text-sm text-red-500 font-bold mt-0.5";
+                        }
+                    } catch (error) {
+                        deskSelect.innerHTML = '<option value="" disabled selected>Erreur de chargement</option>';
+                    }
+                }
+            }
+
+            // Activer toujours la livraison à domicile quand une commune est choisie
+            if (communeId) {
+                document.querySelector('input[value="home"]').disabled = false;
+                document.getElementById('label-home').classList.remove('opacity-50');
+            }
+
+            document.getElementById('summary-shipping').innerText = 'Calcul...';
+            if (!wilayaId || !communeId) {
+                currentShippingRates = { home: 0, desk: 0 };
+                updateOrderSummary();
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/delivery-pricing?to_wilaya_id=${wilayaId}&commune_id=${communeId}`);
+                const result = await response.json();
+                if (result.success && result.data) {
+                    currentShippingRates.home = result.data.homeDelivery || 0;
+                    currentShippingRates.desk = result.data.deskDelivery || 0;
+                    
+                    document.getElementById('price-home').innerText = currentShippingRates.home + " DZD";
+                    if (currentShippingRates.desk > 0) {
+                        document.getElementById('price-desk').innerText = currentShippingRates.desk + " DZD";
+                    }
+                }
+            } catch (error) {
+                currentShippingRates = { home: 0, desk: 0 };
+            }
+            
+            // Auto-sélectionner à domicile si le bureau n'est pas dispo
+            if (document.querySelector('input[value="desk"]').disabled) {
+                document.querySelector('input[value="home"]').checked = true;
+                handleDeliverySelection();
+            }
+            
+            updateOrderSummary();
         }
 
         function resetDelivery() {
-            document.querySelectorAll('input[name="deliveryType"]').forEach(r => { r.checked = false; r.disabled = true; });
-            document.getElementById('label-desk').classList.add('opacity-50');
-            document.getElementById('label-home').classList.add('opacity-50');
-            document.getElementById('desk-status').innerText = "Veuillez sélectionner une commune";
-            document.getElementById('desk-status').className = "text-sm text-gray-500 mt-0.5";
+            document.querySelectorAll('input[name="deliveryType"]').forEach(r => { r.checked = false; });
             document.getElementById('desk-selection-container').classList.add('hidden');
             document.getElementById('address-container').classList.add('hidden');
             document.getElementById('price-desk').innerText = "--";
             document.getElementById('price-home').innerText = "--";
-            state.deliveryPrices = { homeDelivery: 0, deskDelivery: 0 };
-            updateTotals();
-            validateForm();
+            document.getElementById('label-desk').classList.remove('border-eva-burgundy');
+            document.getElementById('label-home').classList.remove('border-eva-burgundy');
+            currentShippingRates = { home: 0, desk: 0 };
+            updateOrderSummary();
         }
 
-        // --- UX LIVRAISON & VALIDATION ---
         function handleDeliverySelection() {
             const type = document.querySelector('input[name="deliveryType"]:checked')?.value;
             const deskContainer = document.getElementById('desk-selection-container');
@@ -776,7 +606,6 @@ function addToCart() {
             const labelDesk = document.getElementById('label-desk');
             const labelHome = document.getElementById('label-home');
 
-            // Reset borders
             labelDesk.classList.remove('border-eva-burgundy');
             labelHome.classList.remove('border-eva-burgundy');
 
@@ -789,140 +618,115 @@ function addToCart() {
                 addressContainer.classList.remove('hidden');
                 labelHome.classList.add('border-eva-burgundy');
             }
-            updateTotals();
-            validateForm();
+            updateOrderSummary();
         }
 
-        document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
-            radio.addEventListener('change', handleDeliverySelection);
-        });
+        function updateOrderSummary() {
+            const subtotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const subtotalElement = document.getElementById('summary-subtotal');
+            if (subtotalElement) subtotalElement.innerText = subtotal + ' DZD';
 
-        function updateTotals() {
-    // Calcule le sous-total de tout le panier
-    let sousTotal = state.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    
-    let shipping = 0;
-    const type = document.querySelector('input[name="deliveryType"]:checked');
-    if (type) {
-        if (type.value === 'desk') shipping = state.deliveryPrices.deskDelivery;
-        if (type.value === 'home') shipping = state.deliveryPrices.homeDelivery;
-    }
+            const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value;
+            const shippingCost = deliveryType ? (currentShippingRates[deliveryType] || 0) : 0;
+            
+            const shippingElement = document.getElementById('summary-shipping');
+            const totalElement = document.getElementById('summary-total');
 
-    const subtotalEl = document.getElementById('summary-subtotal');
-    if (subtotalEl) subtotalEl.innerText = sousTotal + ' DZD';
+            if (shippingCost > 0) {
+                if (shippingElement) shippingElement.innerText = shippingCost + ' DZD';
+                if (totalElement) totalElement.innerText = (subtotal + shippingCost) + ' DZD';
+            } else {
+                if (shippingElement) shippingElement.innerText = '- DZD';
+                if (totalElement) totalElement.innerText = subtotal + ' DZD';
+            }
+        }
 
-    const shippingEl = document.getElementById('summary-shipping');
-    if (shippingEl) shippingEl.innerText = shipping + ' DZD';
-
-    const totalEl = document.getElementById('summary-total');
-    if (totalEl) totalEl.innerText = (sousTotal + shipping) + ' DZD';
-} 
-
-        function validateForm() {
-    // On force le bouton à être toujours actif et cliquable
-    document.getElementById('submit-order-btn').disabled = false;
-}
-
-        ['firstName', 'lastName', 'phone', 'desk', 'address'].forEach(id => {
-            document.getElementById(id).addEventListener('input', validateForm);
-            document.getElementById(id).addEventListener('change', validateForm);
-        });
-
-                // --- SOUMISSION ---
         async function submitOrder() {
-        const firstName = document.getElementById('firstName').value.trim();
-        const lastName = document.getElementById('lastName').value.trim();
-        const phone = document.getElementById('phone').value.trim();
-        const wilayaSelect = document.getElementById('wilaya');
-const wilaya = wilayaSelect.options[wilayaSelect.selectedIndex]?.text || '';
-
-const communeSelect = document.getElementById('commune');
-const commune = communeSelect.options[communeSelect.selectedIndex]?.text || '';
-        const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value || 'home';
-        const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
-
-        // NOUVEAU : Récupération dynamique du nom du bureau Yalidine
-        const deskSelect = document.getElementById('desk');
-        const deskName = (deliveryType === 'desk' && deskSelect && deskSelect.selectedIndex > 0) 
-            ? deskSelect.options[deskSelect.selectedIndex].text 
-            : '';
-
-        // 1. Vérification des champs de base
-        if (!firstName || !lastName || !phone || !wilaya || !commune) {
-            alert("Veuillez remplir tous les champs obligatoires (Nom, Prénom, Téléphone, Wilaya et Commune).");
-            return;
-        }
-
-        // 2. Vérification de l'adresse pour livraison à domicile
-        if (deliveryType === 'home' && !address) {
-            alert("Veuillez saisir votre adresse détaillée pour la livraison à domicile.");
-            return;
-        }
-
-        // 3. NOUVEAU : Vérification du Bureau Yalidine
-        if (deliveryType === 'desk' && !deskName) {
-            alert("Veuillez sélectionner un bureau Yalidine dans la liste.");
-            return;
-        }
-
-        const btn = document.getElementById('submit-order-btn');
-        if (btn.disabled) return;
-        
-        btn.disabled = true;
-        document.getElementById('submit-text').classList.add('hidden');
-        document.getElementById('submit-loader').classList.remove('hidden');
-
-        try {
-            const itemsArray = state.cart.map(i => ({
-                name: i.name,
-                variant: i.variant,
-                quantity: i.qty
-            }));
-
-            let totalGeneral = document.getElementById('summary-total').innerText;
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             
-            const orderData = {
-                customer: { firstName, lastName, phone },
-                items: itemsArray,
-                total: totalGeneral,
-                delivery: {
-                    type: deliveryType,
-                    wilayaName: wilaya,
-                    communeName: commune,
-                    address: address,
-                    deskName: deskName // La variable est maintenant envoyée au backend !
-                }
-            };
-
-            const response = await fetch(`${API_BASE_URL}/order-telegram`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(orderData)
-            });
-
-            if (!response.ok) throw new Error('Erreur serveur');
-
-            document.getElementById('checkout-form').classList.add('hidden');
-            document.getElementById('modal-footer').classList.add('hidden');
-            document.getElementById('success-state').classList.remove('hidden');
+            const wilayaSelect = document.getElementById('wilaya');
+            const wilaya = wilayaSelect.options[wilayaSelect.selectedIndex]?.text || '';
+            const communeSelect = document.getElementById('commune');
+            const commune = communeSelect.options[communeSelect.selectedIndex]?.text || '';
             
-            state.cart = [];
-            localStorage.removeItem('evastouch_cart');
-            if (typeof updateCartBadge === 'function') updateCartBadge();
-            
-        } catch (error) {
-            console.error("Erreur de commande:", error);
-            alert('‼️ Impossible de confirmer la commande. Vérifiez votre connexion.');
-        } finally {
-            btn.disabled = false;
-            document.getElementById('submit-text').classList.remove('hidden');
-            document.getElementById('submit-loader').classList.add('hidden');
-        }
-    } 
+            const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value;
+            const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
+            const deskSelect = document.getElementById('desk');
+            const deskName = (deliveryType === 'desk' && deskSelect && deskSelect.selectedIndex > 0) ? deskSelect.options[deskSelect.selectedIndex].text : '';
 
-        // Run on load
+            if (!firstName || !lastName || !phone || !wilaya || !commune || !deliveryType) {
+                alert("Veuillez remplir tous les champs obligatoires et choisir un mode de livraison.");
+                return;
+            }
+
+            if (deliveryType === 'home' && !address) {
+                alert("Veuillez saisir votre adresse détaillée pour la livraison à domicile.");
+                return;
+            }
+
+            if (deliveryType === 'desk' && !deskName) {
+                alert("Veuillez sélectionner un bureau Yalidine dans la liste.");
+                return;
+            }
+
+            const btn = document.getElementById('submit-order-btn');
+            if (btn.disabled) return;
+            
+            btn.disabled = true;
+            document.getElementById('submit-text').classList.add('hidden');
+            document.getElementById('submit-loader').classList.remove('hidden');
+
+            try {
+                const itemsArray = state.cart.map(i => ({
+                    name: i.name,
+                    variant: i.variant,
+                    quantity: i.qty
+                }));
+
+                let totalGeneral = document.getElementById('summary-total').innerText;
+                
+                const orderData = {
+                    customer: { firstName, lastName, phone },
+                    items: itemsArray,
+                    total: totalGeneral,
+                    delivery: {
+                        type: deliveryType,
+                        wilayaName: wilaya,
+                        communeName: commune,
+                        address: address,
+                        deskName: deskName 
+                    }
+                };
+
+                const response = await fetch(`${API_BASE_URL}/order-telegram`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderData)
+                });
+
+                if (!response.ok) throw new Error('Erreur serveur');
+
+                document.getElementById('checkout-form').classList.add('hidden');
+                document.getElementById('modal-footer').classList.add('hidden');
+                document.getElementById('success-state').classList.remove('hidden');
+                
+                state.cart = [];
+                localStorage.removeItem('evastouch_cart');
+                updateCartBadge();
+                
+            } catch (error) {
+                console.error("Erreur de commande:", error);
+                alert('‼️ Impossible de confirmer la commande. Vérifiez votre connexion.');
+            } finally {
+                btn.disabled = false;
+                document.getElementById('submit-text').classList.remove('hidden');
+                document.getElementById('submit-loader').classList.add('hidden');
+            }
+        } 
+
         document.addEventListener('DOMContentLoaded', initProduct);
-
 
     </script>
 </body>
