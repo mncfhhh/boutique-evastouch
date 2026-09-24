@@ -750,19 +750,14 @@
 
         async function fetchStockAndInit() {
             try {
-                // On force la connexion directe
-                const response = await fetch('https://eva-touch-cod-backend.onrender.com/api/stock?t=' + Date.now());
+                const response = await fetch('https://eva-touch-cod-backend.onrender.com/api/stock?t=' + Date.now(), { mode: 'cors' });
                 const data = await response.json();
                 
                 if (data.success && data.stock) {
                     PRODUCT.variants.forEach(variant => {
-                        // Nettoyage extrême : on supprime tous les espaces et caractères invisibles des emojis
                         const nomSite = variant.name.replace(/[\s\uFE0F]/g, '');
-                        
                         for (const [nomServeur, quantite] of Object.entries(data.stock)) {
                             const nomDB = nomServeur.replace(/[\s\uFE0F]/g, '');
-                            
-                            // Si les noms correspondent après nettoyage, on applique le stock
                             if (nomSite === nomDB) {
                                 variant.stock = quantite;
                             }
@@ -770,8 +765,7 @@
                     });
                 }
             } catch (error) {
-                // Alerte visuelle temporaire pour nous aider à débugger
-                alert("Le serveur Render est en train de se réveiller (cela prend parfois 50 secondes). Patientez un instant et rafraîchissez !");
+                console.error("Synchronisation du stock impossible :", error);
             }
             
             initProduct();
