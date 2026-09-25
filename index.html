@@ -708,12 +708,14 @@
                 }));
 
                 let totalGeneral = document.getElementById('summary-total').innerText;
+                let sousTotal = document.getElementById('summary-subtotal').innerText; // NOUVELLE LIGNE
                 
                 const orderData = {
                     customer: { firstName, lastName, phone },
                     items: itemsArray,
                     total: totalGeneral,
-                    delivery: {
+                    subtotal: sousTotal, // NOUVELLE LIGNE
+                    delivery: { 
                         type: deliveryType,
                         wilayaName: wilaya,
                         communeName: commune,
