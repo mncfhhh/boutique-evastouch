@@ -172,12 +172,13 @@
                             <span class="w-6 h-0.5 bg-eva-burgundy rounded"></span> Informations • معلوماتك
                         </h3>
                         <div class="grid grid-cols-2 gap-4 mb-4">
-                            <input type="text" id="firstName" placeholder="Prénom • الاسم" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
-                            <input type="text" id="lastName" placeholder="Nom • اللقب" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
-                        </div>
+                            <input type="text" id="firstName" placeholder="Prénom • الاسم" oninput="checkFormValidity()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
+                            <input type="text" id="lastName" placeholder="Nom • اللقب" oninput="checkFormValidity()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
+                        </div> 
                         <div>
-                            <input type="tel" id="phone" placeholder="Téléphone (ex: 05...)" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
-                        </div>
+                            <input type="tel" id="phone" placeholder="05/06/07 XX XX XX XX" maxlength="10" oninput="checkFormValidity()" class="w-full px-5 py-4 rounded-xl border-2 border-gray-100 focus:border-eva-burgundy outline-none bg-gray-50 text-gray-900 font-medium" required>
+                            <p class="text-xs text-eva-burgundy mt-1 ml-2">Format: 05, 06 ou 07 suivi de 8 chiffres</p>
+                        </div> 
                     </div>
 
                     <div>
@@ -229,8 +230,8 @@
                                     <span id="price-home" class="font-bold text-eva-burgundy text-lg">--</span>
                                 </label>
                                 <div id="address-container" class="hidden mt-3 px-2">
-                                    <input type="text" id="address" placeholder="📍 Adresse complète (Quartier, rue...) • العنوان الكامل" class="w-full px-5 py-4 rounded-xl border-2 border-eva-pinkLight focus:border-eva-burgundy outline-none bg-eva-beige font-medium text-gray-900">
-                                </div>
+                                    <input type="text" id="address" oninput="checkFormValidity()" placeholder="📍 Adresse complète (Quartier, rue...) • العنوان الكامل" class="w-full px-5 py-4 rounded-xl border-2 border-eva-pinkLight focus:border-eva-burgundy outline-none bg-eva-beige font-medium text-gray-900">
+                                </div> 
                             </div>
                         </div>
                     </div> 
@@ -248,10 +249,10 @@
                             <span class="text-lg font-bold text-gray-900">TOTAL</span>
                             <span class="text-2xl font-bold text-eva-burgundy" id="summary-total">0 DZD</span>
                         </div>
-                        <button type="button" id="submit-order-btn" onclick="submitOrder()" class="w-full h-[52px] bg-eva-burgundy hover:bg-eva-burgundy-dark text-white rounded-2xl font-bold flex items-center justify-center mt-6">
+                        <button type="button" id="submit-order-btn" onclick="submitOrder()" disabled class="w-full h-[52px] bg-gray-300 text-gray-500 cursor-not-allowed rounded-2xl font-bold flex items-center justify-center mt-6 transition-colors">
                             <span id="submit-text">CONFIRMER VOTRE COMMANDE / أكد طلبك</span>
                             <span id="submit-loader" class="loader hidden"></span>
-                        </button>
+                        </button> 
                     </div> 
                     
                 </form> 
@@ -657,13 +658,57 @@
             if (shippingCost > 0) {
                 if (shippingElement) shippingElement.innerText = shippingCost + ' DZD';
                 if (totalElement) totalElement.innerText = (subtotal + shippingCost) + ' DZD';
-            } else {
+           } else {
                 if (shippingElement) shippingElement.innerText = '- DZD';
                 if (totalElement) totalElement.innerText = subtotal + ' DZD';
+            }
+            
+            // Déclenche la vérification à chaque changement de wilaya/commune/livraison
+            if (typeof checkFormValidity === 'function') checkFormValidity();
+        }
+
+        function checkFormValidity() {
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const wilaya = document.getElementById('wilaya').value;
+            const commune = document.getElementById('commune').value;
+            const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value;
+            const address = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
+            const deskSelect = document.getElementById('desk');
+            const hasDeskSelected = (deliveryType === 'desk' && deskSelect && deskSelect.selectedIndex > 0);
+            
+            const btn = document.getElementById('submit-order-btn');
+            if (!btn) return;
+
+            const regexTelephone = /^(05|06|07)[0-9]{8}$/;
+            const isPhoneValid = regexTelephone.test(phone);
+
+            let isFormComplete = false;
+            if (firstName && lastName && isPhoneValid && wilaya && commune && deliveryType) {
+                if (deliveryType === 'home' && address.length >= 4) {
+                    isFormComplete = true;
+                } else if (hasDeskSelected) {
+                    isFormComplete = true;
+                }
+            }
+
+            if (isFormComplete) {
+                btn.disabled = false;
+                btn.className = "w-full h-[52px] bg-eva-burgundy hover:bg-eva-burgundy-dark text-white cursor-pointer rounded-2xl font-bold flex items-center justify-center mt-6 transition-colors shadow-lg";
+            } else {
+                btn.disabled = true;
+                btn.className = "w-full h-[52px] bg-gray-300 text-gray-500 cursor-not-allowed rounded-2xl font-bold flex items-center justify-center mt-6 transition-colors";
             }
         }
 
         async function submitOrder() {
+            const phoneCheck = document.getElementById('phone').value.trim();
+            const regexTelephone = /^(05|06|07)[0-9]{8}$/;
+            if (!regexTelephone.test(phoneCheck)) {
+                alert("Veuillez vérifier votre numéro. Il doit commencer par 05, 06 ou 07 et contenir exactement 10 chiffres.");
+                return;
+            
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const phone = document.getElementById('phone').value.trim();
