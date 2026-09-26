@@ -163,7 +163,7 @@
                     <button onclick="closeModal()" class="bg-eva-burgundy hover:bg-eva-burgundyLight text-white px-10 py-4 rounded-xl font-bold transition-colors w-full md:w-auto shadow-lg shadow-eva-pink">Retourner à la boutique</button>
                 </div>
 
-                <form id="checkout-form" class="space-y-8">
+                <form id="checkout-form" class="space-y-8" oninput="if(typeof checkFormValidity === 'function') checkFormValidity()" onchange="if(typeof checkFormValidity === 'function') checkFormValidity()">
                     
                     <div id="checkout-cart-items" class="flex flex-col gap-3"></div> 
 
