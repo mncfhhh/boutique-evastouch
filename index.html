@@ -364,6 +364,12 @@
             const qtyInCart = existingItem ? existingItem.qty : 0;
             const requestedQty = parseInt(state.currentQty);
 
+            const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
+    if (totalPanier + requestedQty > 12) {
+        showToast("Oups, ce n'est pas possible de passer cette commande ici sur le site. Merci de nous contacter via message direct sur notre page instagram @_evastouch_ ou sur notre whatsapp +213 555398801", "error");
+        return;
+    } 
+
             if (currentVariant.stock !== undefined && (qtyInCart + requestedQty) > currentVariant.stock) {
             showToast("Oups, il ne reste pas autant de pièces dans le stock.", "error");
                 return; 
