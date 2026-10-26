@@ -365,7 +365,7 @@
             const requestedQty = parseInt(state.currentQty);
 
 const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
-    if (totalPanier + requestedQty > 12) {
+    if (totalPanier + requestedQty > 11) {
         const overlay = document.createElement('div');
         // Fond sombre et centrage
         overlay.className = "fixed inset-0 z-[200] flex items-center justify-center bg-black bg-opacity-60 p-5";
