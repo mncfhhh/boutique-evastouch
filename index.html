@@ -364,12 +364,28 @@
             const qtyInCart = existingItem ? existingItem.qty : 0;
             const requestedQty = parseInt(state.currentQty);
 
-            const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
+const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0);
     if (totalPanier + requestedQty > 12) {
-        showToast("Oups, ce n'est pas possible de passer cette commande ici sur le site. Merci de nous contacter via message direct sur notre page instagram @_evastouch_ ou sur notre whatsapp +213 555398801", "error");
+        const overlay = document.createElement('div');
+        // Fond sombre et centrage
+        overlay.className = "fixed inset-0 z-[200] flex items-center justify-center bg-black bg-opacity-60 p-5";
+        // Contenu du pop-up blanc avec icône, texte et bouton
+        overlay.innerHTML = `
+            <div class="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm text-center flex flex-col items-center gap-3">
+                <div class="text-red-500 bg-red-50 p-4 rounded-full mb-2">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900">Commande spéciale</h3>
+                <p class="text-sm text-gray-600 leading-relaxed">
+                    Oups, ce n'est pas possible de passer cette commande ici sur le site.<br><br>
+                    Merci de nous contacter via message direct sur notre page Instagram <b>@_evastouch_</b> ou sur notre WhatsApp <b>+213 555398801</b>
+                </p>
+                <button onclick="this.closest('.fixed').remove()" class="mt-4 w-full bg-gray-900 text-white rounded-2xl py-3.5 font-bold text-[15px]">Compris</button>
+            </div>
+        `;
+        document.body.appendChild(overlay);
         return;
     } 
-
             if (currentVariant.stock !== undefined && (qtyInCart + requestedQty) > currentVariant.stock) {
             showToast("Oups, il ne reste pas autant de pièces dans le stock.", "error");
                 return; 
