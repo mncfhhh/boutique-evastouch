@@ -111,6 +111,23 @@
         0% { opacity: 0; transform: scale(0.9); }
         100% { opacity: 0.4; transform: scale(1.2); }
     } 
+        /* Animation fermeture pop-up (Slide Down) */
+    .modal-content-exit {
+        animation: slideDown 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideDown {
+        from { opacity: 1; transform: translate(-50%, -50%); }
+        to { opacity: 0; transform: translate(-50%, 100%); }
+    }
+
+    /* Animation suppression article (Glissement poubelle) */
+    .item-delete-anim {
+        animation: slideOutTrash 0.3s ease-in forwards;
+    }
+    @keyframes slideOutTrash {
+        50% { opacity: 0.5; transform: scale(0.95) translateX(10px); }
+        100% { opacity: 0; transform: scale(0.9) translateX(50px); }
+    } 
     </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex flex-col">
@@ -497,16 +514,30 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
             }
         }
 
-        function removeFromCart(variantName) {
-            state.cart = state.cart.filter(item => item.variant !== variantName);
-            localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
-            updateCartBadge();
-            if (state.cart.length === 0) {
-                closeModal();
-            } else {
-                openModal();
+        function removeFromCart(variantName, btnElement) {
+            // Si on a bien le bouton, on anime la ligne
+            if (btnElement) {
+                const itemRow = btnElement.closest('.bg-eva-beige');
+                if (itemRow) {
+                    itemRow.classList.add('item-delete-anim');
+                    // On fait rougir et tourner un peu la poubelle
+                    btnElement.classList.add('text-red-600');
+                    btnElement.style.transform = "rotate(15deg)";
+                }
             }
-        }
+
+            // On attend la fin de l'animation (300ms) pour supprimer l'article de la mémoire
+            setTimeout(() => {
+                state.cart = state.cart.filter(item => item.variant !== variantName);
+                localStorage.setItem('evastouch_cart', JSON.stringify(state.cart));
+                updateCartBadge();
+                if (state.cart.length === 0) {
+                    closeModal(); // Ferme avec le beau slide down si le panier est vide
+                } else {
+                    openModal(); // Recharge le reste du panier
+                }
+            }, 300);
+        } 
 
         function updateCartItemQty(variantName, change) {
             const itemIndex = state.cart.findIndex(i => i.variant === variantName);
@@ -557,7 +588,7 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
                         </div>
                     </div>
                     <div class="text-right flex flex-col items-end justify-between h-full">
-                        <button type="button" onclick="removeFromCart('${item.variant}')" class="text-gray-400 hover:text-red-500 p-1 mb-1">
+<button type="button" onclick="removeFromCart('${item.variant}', this)" class="text-gray-400 hover:text-red-500 p-1 mb-1 transition-transform hover:scale-110">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                         <p class="font-bold text-gray-900">${item.price * item.qty} DZD</p>
@@ -578,10 +609,18 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
         } 
 
         function closeModal() {
-            document.getElementById('checkout-modal').classList.add('hidden');
-            document.getElementById('modal-box').classList.remove('modal-content-enter');
-            document.body.style.overflow = 'auto';
-        }
+            const modalBox = document.getElementById('modal-box');
+            // On lance l'animation de sortie
+            modalBox.classList.remove('modal-content-enter');
+            modalBox.classList.add('modal-content-exit');
+            
+            // On attend 350ms (la durée de l'animation) avant de cacher le modal
+            setTimeout(() => {
+                document.getElementById('checkout-modal').classList.add('hidden');
+                modalBox.classList.remove('modal-content-exit'); // On nettoie pour la prochaine fois
+                document.body.style.overflow = 'auto';
+            }, 350);
+        } 
 
         // --- YALIDINE API LOGIC ---
         async function loadWilayas() {
