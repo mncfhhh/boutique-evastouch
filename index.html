@@ -50,8 +50,8 @@
         .modal-content-enter { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
+        @keyframes slideUp { from { opacity: 0; transform: translate(-50%, 100%); } to { opacity: 1; transform: translate(-50%, -50%); } }
+        
         input[type="radio"].eva-radio {
             accent-color: #7a2e44;
             width: 1.25rem; height: 1.25rem;
@@ -69,6 +69,48 @@
             transform: scale(1.1);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+        @keyframes popIn {
+        0% { transform: scale(0.5); opacity: 0; }
+        70% { transform: scale(1.1); opacity: 1; }
+        100% { transform: scale(1); }
+    }
+    .success-icon-anim { 
+        animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+    }
+    .fade-in-section { 
+        animation: fadeIn 0.4s ease-out forwards; 
+    } 
+        /* Animation du cercle qui se dessine */
+    .anim-check-circle {
+        stroke-dasharray: 160;
+        stroke-dashoffset: 160;
+        animation: drawCheck 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+    /* Remplissage doux en arrière-plan */
+    .anim-check-fill {
+        animation: fillCheck 0.4s ease-out 0.5s forwards;
+    }
+    /* Animation de la coche qui se dessine */
+    .anim-check-path {
+        stroke-dasharray: 50;
+        stroke-dashoffset: 50;
+        animation: drawCheck 0.4s cubic-bezier(0.65, 0, 0.45, 1) 0.7s forwards;
+    }
+    /* Halo lumineux autour (Glow) */
+    .anim-check-glow {
+        animation: glowCheck 1.5s ease-out 0.7s infinite alternate forwards;
+    }
+
+    @keyframes drawCheck {
+        to { stroke-dashoffset: 0; }
+    }
+    @keyframes fillCheck {
+        to { fill: #f0fdf4; } /* Correspond à green-50 */
+    }
+    @keyframes glowCheck {
+        0% { opacity: 0; transform: scale(0.9); }
+        100% { opacity: 0.4; transform: scale(1.2); }
+    } 
     </style>
 </head>
 <body class="text-gray-800 antialiased min-h-screen flex flex-col">
@@ -153,7 +195,7 @@
     <div id="checkout-modal" class="fixed inset-0 z-50 hidden">
         <div class="absolute inset-0 bg-gray-900 bg-opacity-60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
         
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden overflow-y-auto">
+        <div id="modal-box" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-2xl bg-white rounded-3xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden overflow-y-auto">
             
             <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-eva-beige">
                 <h2 class="text-xl font-bold text-eva-burgundy">Finaliser la commande</h2>
@@ -164,10 +206,21 @@
 
             <div class="p-6 overflow-y-auto hide-scrollbar flex-grow bg-white">
                 
-                <div id="success-state" class="hidden flex-col items-center justify-center py-12 text-center">
-                    <div class="w-24 h-24 bg-green-50 text-green-500 rounded-full flex items-center justify-center mb-6 shadow-inner">
-                        <svg class="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
+               <div id="success-state" class="hidden flex-col items-center justify-center py-12 text-center w-full min-h-[350px]">
+                    <div class="relative w-24 h-24 mb-6 mx-auto flex items-center justify-center">
+                        <!-- Le halo lumineux (glow) en arrière-plan -->
+                        <div class="absolute inset-0 bg-green-400 rounded-full filter blur-xl opacity-0 anim-check-glow"></div>
+                        
+                        <!-- L'icône SVG animée -->
+                        <svg class="relative z-10 w-24 h-24" viewBox="0 0 52 52">
+                            <!-- Le cercle qui se dessine -->
+                            <circle class="anim-check-circle" cx="26" cy="26" r="24" fill="none" stroke="#22c55e" stroke-width="2"/>
+                            <!-- Le fond qui se remplit -->
+                            <circle class="anim-check-fill" cx="26" cy="26" r="24" fill="transparent" />
+                            <!-- La coche qui se dessine -->
+                            <path class="anim-check-path" fill="none" stroke="#22c55e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" d="M15 27l7 7 15-15"/>
+                        </svg>
+                    </div> 
                     <h3 class="text-2xl font-bold text-gray-900 mb-2">Commande confirmée !</h3>
                     <p class="text-gray-600 mb-8 font-cairo text-lg" dir="rtl">شكرا لثقتكم. سنتصل بكم قريبا لتأكيد الطلب 🌸</p>
                     <button onclick="closeModal()" class="bg-eva-burgundy hover:bg-eva-burgundyLight text-white px-10 py-4 rounded-xl font-bold transition-colors w-full md:w-auto shadow-lg shadow-eva-pink">Retourner à la boutique</button>
@@ -338,11 +391,17 @@
                     addToCartBtn.className = "flex-1 h-[52px] bg-gray-300 text-gray-500 rounded-2xl font-bold flex items-center justify-center cursor-not-allowed";
                 } else {
                     addToCartBtn.disabled = false;
-                    addToCartBtn.innerHTML = `
-                        <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zM7 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zm0-3l1.1-2h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49A1.003 1.003 0 0 0 20 4H5.21l-.94-2H1v2h2l3.6 7.59-1.35 2.44C4.52 15.37 5.48 17 7 17h12v-2H7l1.1-2h7.45zM5.21 6h14.65l-2.76 5H8.53L5.21 6z"/><path d="M12 2v3H9v2h3v3h2V7h3V5h-3V2z"/></svg>
-                        Ajouter au panier
-                    `;
-                    addToCartBtn.className = "flex-1 h-[52px] bg-black hover:bg-gray-800 text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-colors";
+                   addToCartBtn.innerHTML = `
+                <span class="text-span w-full" style="display: flex !important; justify-content: center; align-items: center; gap: 8px;">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M17 18c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm6 16c-1.11 0-2 .89-2 2s.89 2 2 2 2-.89 2-2-.89-2-2-2z"></path></svg>
+                    Ajouter au panier
+                </span>
+                <div class="cart-icon-wrapper">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    <div class="cart-box"></div>
+                </div>
+            `;
+            addToCartBtn.className = "cart-btn-anim flex-1 h-[52px] bg-black hover:bg-gray-800 text-white rounded-2xl font-bold flex items-center justify-center transition-all duration-300";
                 }
             } 
         }
@@ -414,17 +473,15 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
            // Affiche la bulle de succès
     showToast("Article ajouté au panier !", "success");
 
-    // Anime le bouton "Ajouter au panier"
+    // Anime le bouton avec le chariot
     const btn = document.querySelector('button[onclick="addToCart()"]');
-    if (btn) {
-        const texteOriginal = btn.innerHTML;
-        btn.innerHTML = '✓ Ajouté ! ✅';
-        btn.classList.add('!bg-green-500', '!text-white');
+    if (btn && !btn.classList.contains('is-animating')) {
+        btn.classList.add('is-animating');
         
+        // Retire la classe après 2.5 secondes (la durée de l'animation CSS)
         setTimeout(() => {
-            btn.innerHTML = texteOriginal;
-            btn.classList.remove('!bg-green-500', '!text-white');
-        }, 3000);
+            btn.classList.remove('is-animating');
+        }, 2500);
     } 
         } 
 
@@ -475,7 +532,7 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
             
         function openModal() {
             if (state.cart.length === 0) {
-                alert("Votre panier est vide.");
+                showToast("Votre panier est vide.", "error");
                 return;
             }
             
@@ -510,6 +567,7 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
             });
 
             document.getElementById('checkout-modal').classList.remove('hidden');
+            document.getElementById('modal-box').classList.add('modal-content-enter');
             document.body.style.overflow = 'hidden';
             document.getElementById('success-state').classList.add('hidden');
             document.getElementById('checkout-form').classList.remove('hidden');
@@ -521,6 +579,7 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
 
         function closeModal() {
             document.getElementById('checkout-modal').classList.add('hidden');
+            document.getElementById('modal-box').classList.remove('modal-content-enter');
             document.body.style.overflow = 'auto';
         }
 
@@ -830,7 +889,10 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
 
                 document.getElementById('checkout-form').classList.add('hidden');
                 document.getElementById('modal-footer').classList.add('hidden');
-                document.getElementById('success-state').classList.remove('hidden');
+                
+                const successState = document.getElementById('success-state');
+                successState.classList.remove('hidden');
+                successState.classList.add('fade-in-section');
                 
                 state.cart = [];
                 localStorage.removeItem('evastouch_cart');
@@ -902,8 +964,69 @@ function showToast(message, type = 'success') {
 } 
         
     </script>
+
+<style>
+    /* Conteneur principal du bouton */
+    .cart-btn-anim { 
+        position: relative; 
+        overflow: hidden; 
+    }
+    
+    /* Le texte "Ajouter au panier" */
+    .cart-btn-anim .text-span { 
+        transition: all 0.3s ease; 
+        display: inline-block; 
+    }
+    .cart-btn-anim.is-animating .text-span { 
+        opacity: 0; 
+        transform: translateY(15px); 
+    }
+
+    /* Le chariot qui roule */
+    .cart-btn-anim .cart-icon-wrapper {
+        position: absolute; 
+        top: 50%; 
+        left: 50%;
+        transform: translate(-150px, -50%);
+        opacity: 0;
+    }
+    .cart-btn-anim.is-animating .cart-icon-wrapper {
+        animation: driveCart 2.5s ease-in-out forwards;
+    }
+
+    /* La petite boîte qui tombe */
+    .cart-btn-anim .cart-box {
+        position: absolute; 
+        top: -20px; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px; 
+        height: 12px; 
+        background: white; 
+        border-radius: 2px;
+        opacity: 0;
+    }
+    .cart-btn-anim.is-animating .cart-box {
+        animation: dropBox 2.5s ease-in-out forwards;
+    }
+
+    /* Scénario d'animation du chariot */
+    @keyframes driveCart {
+        0% { transform: translate(-150px, -50%); opacity: 0; }
+        20%, 60% { transform: translate(-50%, -50%); opacity: 1; }
+        80%, 100% { transform: translate(100px, -50%); opacity: 0; }
+    }
+
+    /* Scénario d'animation de la boîte */
+    @keyframes dropBox {
+        0%, 20% { top: -20px; opacity: 0; }
+        30% { top: -20px; opacity: 1; }
+        45%, 60% { top: 25%; opacity: 1; transform: translate(-50%, -50%) scale(0.8); }
+        80%, 100% { top: 25%; opacity: 0; transform: translate(100px, -50%) scale(0.8); }
+    }
+</style> 
     
     <div id="toast-container" class="fixed top-24 left-1/2 -translate-x-1/2 z-[100] flex flex-col items-center gap-3 pointer-events-none w-[90%] max-w-sm"></div> 
 
 </body>
-</html>
+</html> 
