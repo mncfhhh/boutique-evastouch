@@ -13,6 +13,7 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://6ab3ea1c49b4a3698fff2d31.imgix.net" crossorigin>
     <title>Tablier de cuisine anti-taches et impermeable 🌸👩‍🍳 | Eva's Touch 🌸</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -183,7 +184,7 @@
         <div class="w-full flex flex-col gap-4 mt-6 mb-6"> 
             <div id="img-wrap" class="img-wrap fx-up relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-white shadow-md border border-eva-pinkLight" style="--d:.45s">
                 <span class="absolute top-4 left-4 bg-eva-burgundy text-white text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider z-10 shadow-sm badge-shine overflow-hidden">Best Seller</span>
-                <img id="main-image" src="" alt="Tablier de cuisine" class="w-full h-full object-cover transition-opacity duration-300">
+                <img id="main-image" src="" alt="Tablier de cuisine" fetchpriority="high" decoding="async" class="w-full h-full object-cover transition-opacity duration-300">
             </div>
         </div> 
 
@@ -391,16 +392,16 @@
             name: "Tablier de cuisine anti-taches",
             price: 1800,
             variants: [
-                { id: 'v1', name: "Rose 🌸", colorCode: "#f8c8d4", img: "https://ik.imagekit.io/evastouch/rose.jpg"},
-                { id: 'v2', name: "Blanc 🐚🌸", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/bwk.JPG"},
-                { id: 'v3', name: "Blanc 🐚", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/bws.JPG"},
-                { id: 'v4', name: "Blanc 🌺", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/sorecal.jpg"},
-                { id: 'v5', name: "Blanc 💐", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/chaba.JPG"},
-                { id: 'v6', name: "Bleu 🩵🌸", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/chewingum.JPG"},
-                { id: 'v7', name: "Blanc 🌸", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/l3anabiya.JPG"},
-                { id: 'v8', name: "Blanc 🦆👩‍🍳", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/taelbata.JPG"},
-                { id: 'v9', name: "Blanc 🩷💜🌸", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/violet.JPG"},
-                { id: 'v10', name: "Blanc 💜🩵🌸", colorCode: "#7a2e44", img: "https://ik.imagekit.io/evastouch/l3anabiyableu.JPG"}
+                { id: 'v1', name: "Rose 🌸", colorCode: "#f8c8d4", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Rose%20🌸.jpeg"},
+                { id: 'v2', name: "Blanc 🐚🌸", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20🐚🌸.jpeg"},
+                { id: 'v3', name: "Blanc 🐚", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20🐚.jpeg"},
+                { id: 'v4', name: "Blanc 🌺", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20🌺.jpeg"},
+                { id: 'v5', name: "Blanc 💐", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20💐.jpeg"},
+                { id: 'v6', name: "Bleu 🩵🌸", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Bleu%20%F0%9F%A9%B5.jpeg"},
+                { id: 'v7', name: "Blanc 🌸", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20🌸.jpeg"},
+                { id: 'v8', name: "Blanc 🦆👩‍🍳", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20🦆👩%E2%80%8D🍳.jpeg"},
+                { id: 'v9', name: "Blanc 🩷💜🌸", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20🩷💜🌸.jpeg"},
+                { id: 'v10', name: "Blanc 💜🩵🌸", colorCode: "#7a2e44", img: "https://6ab3ea1c49b4a3698fff2d31.imgix.net/sandbox/Blanc%20%F0%9F%92%9C%F0%9F%A9%B5%F0%9F%8C%B8.jpeg"}
             ]
         };
 
@@ -437,7 +438,11 @@
                 container.appendChild(btn);
             });
 
-            document.getElementById('main-image').src = state.selectedVariant.img;
+            const _mi = document.getElementById('main-image'), _u = state.selectedVariant.img;
+            const _x = w => _u + (_u.includes('?') ? '&' : '?') + 'auto=format,compress&fit=crop&ar=4:5&w=' + w + '&q=85';
+            _mi.sizes = '(min-width:1024px) 600px, 100vw';
+            _mi.srcset = [500, 800, 1100].map(w => _x(w) + ' ' + w + 'w').join(', ');
+            _mi.src = _x(800);
             const colorNameDisplay = document.getElementById('selected-color-name');
             if (colorNameDisplay) colorNameDisplay.innerText = state.selectedVariant.name;
             updateCartBadge();
@@ -1293,6 +1298,12 @@ button[onclick^="changeCurrentQty"].fx-hold{background:#fbe4ea;color:#7a2e44}
 .fx-r-track{text-align:center;font-size:12px;color:#374151}
 .fx-r-code{display:block;margin:8px auto 0;padding:8px 14px;border:2px dashed #f8c8d4;border-radius:12px;background:#fdf6f2;color:#7a2e44;font-weight:700;font-size:16px;letter-spacing:.04em;cursor:pointer;word-break:break-all}
 .fx-r-track small{display:block;margin-top:4px;color:#9ca3af;font-size:10px}
+/* --- Champs manquants --- */
+@keyframes fx-miss{0%{box-shadow:0 0 0 0 rgba(244,114,182,0)}30%{box-shadow:0 0 0 7px rgba(244,114,182,.45)}100%{box-shadow:0 0 0 0 rgba(244,114,182,0)}}
+.fx-miss{animation:fx-miss .7s ease-out 2,fx-shake .4s}
+.fx-miss-keep{border-color:#f472b6!important;background-color:#fff1f6!important}
+#submit-order-btn:disabled{pointer-events:none}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .petals{display:none}
@@ -1733,6 +1744,77 @@ submitOrder=async function(){
     showReceipt(m);
   }
 };
+
+/* ===== Champs manquants qui s'allument ===== */
+const sbtn=$('#submit-order-btn');
+function missingEls(){
+  const v=id=>{const e=document.getElementById(id);return e?e.value.trim():''};
+  const type=(document.querySelector('input[name="deliveryType"]:checked')||{}).value;
+  const out=[];
+  if(!v('firstName'))out.push($('#firstName'));
+  if(!v('lastName'))out.push($('#lastName'));
+  if(!/^(05|06|07)\d{8}$/.test(v('phone')))out.push($('#phone'));
+  if(!v('wilaya'))out.push($('#wilaya'));
+  if(!v('commune'))out.push($('#commune'));
+  if(!type)out.push($('#label-desk'),$('#label-home'));
+  else if(type==='home'){if(v('address').length<4)out.push($('#address'))}
+  else{const d=$('#desk');if(!(d&&d.selectedIndex>0))out.push(d)}
+  return out.filter(Boolean);
+}
+function flashMissing(){
+  const els=missingEls();if(!els.length)return;
+  els.forEach(el=>{el.classList.add('fx-miss-keep');retrigger(el,'fx-miss');setTimeout(()=>el.classList.remove('fx-miss'),1500)});
+  const f=els[0];
+  f.scrollIntoView({behavior:'smooth',block:'center'});
+  if(f.tagName==='INPUT'&&f.type!=='radio')setTimeout(()=>f.focus({preventScroll:true}),400);
+  if(sbtn){retrigger(sbtn,'fx-shake');setTimeout(()=>sbtn.classList.remove('fx-shake'),450)}
+  showToast('Complétez les champs en rose 🌸 • أكمل الحقول الملونة','error');
+}
+if(sbtn)sbtn.parentElement.addEventListener('click',e=>{
+  if(!sbtn.disabled)return;
+  const r=sbtn.getBoundingClientRect();
+  if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)return;
+  flashMissing();
+});
+const cform=$('#checkout-form');
+if(cform){
+  const clear=e=>{
+    const t=e.target;if(t.classList)t.classList.remove('fx-miss-keep');
+    if(t.name==='deliveryType')['#label-desk','#label-home'].forEach(s=>{const l=$(s);if(l)l.classList.remove('fx-miss-keep')});
+  };
+  cform.addEventListener('input',clear);cform.addEventListener('change',clear);
+}
+
+/* ===== Téléphone : 0555 12 34 56 ===== */
+(function(){
+  const ph=$('#phone');if(!ph)return;
+  const d=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value');
+  /* le reste du site continue de lire 10 chiffres sans espaces */
+  Object.defineProperty(ph,'value',{configurable:true,get(){return d.get.call(this).replace(/\s/g,'')},set(v){d.set.call(this,v)}});
+  ph.maxLength=13;
+  const fmt=raw=>{
+    let s=raw.replace(/[٠-٩]/g,c=>c.charCodeAt(0)-1632).replace(/\D/g,'');
+    if(/^(00)?213/.test(s)&&s.length>=12)s='0'+s.replace(/^(00)?213/,'');
+    s=s.slice(0,10);
+    return [s.slice(0,4),s.slice(4,6),s.slice(6,8),s.slice(8,10)].filter(Boolean).join(' ');
+  };
+  ph.addEventListener('input',()=>{
+    const cur=d.get.call(ph),pos=ph.selectionStart||0;
+    const before=cur.slice(0,pos).replace(/\D/g,'').length;
+    const out=fmt(cur);
+    if(out===cur)return;
+    d.set.call(ph,out);
+    let n=0,p=0;
+    while(p<out.length&&n<before){if(/\d/.test(out[p]))n++;p++}
+    try{ph.setSelectionRange(p,p)}catch(_){}
+  });
+  ph.addEventListener('paste',e=>{
+    const t=(e.clipboardData||window.clipboardData).getData('text');
+    e.preventDefault();
+    d.set.call(ph,fmt(t));
+    ph.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+})();
 }catch(err){console.warn('fx-layer:',err)}
 })();
 </script>
