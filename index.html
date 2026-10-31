@@ -13,8 +13,17 @@
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://6ab3ea1c49b4a3698fff2d31.imgix.net" crossorigin>
-    <title>Tablier de cuisine anti-taches et impermeable 🌸👩‍🍳 | Eva's Touch 🌸</title>
+    <link rel="preconnect" href="https://ik.imagekit.io" crossorigin>
+    <title>Tablier de cuisine anti-taches et imperméable 🌸👩‍🍳 | Eva's Touch 🌸</title>
+    <meta name="description" content="Tablier de cuisine anti-taches et imperméable, en plusieurs couleurs. Livraison dans les 58 wilayas, paiement à la livraison 🌸">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Eva's Touch">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:title" content="Tablier de cuisine anti-taches et imperméable 🌸 | Eva's Touch">
+    <meta property="og:description" content="Tablier de cuisine anti-taches et imperméable, en plusieurs couleurs. Livraison dans les 58 wilayas, paiement à la livraison 🌸">
+    <meta property="og:image" content="https://ik.imagekit.io/evastouch/rose.jpg?tr=w-800,ar-1-1,q-75,f-jpg">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="800">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -439,7 +448,7 @@
             });
 
             const _mi = document.getElementById('main-image'), _u = state.selectedVariant.img;
-            const _x = w => _u + (_u.includes('?') ? '&' : '?') + 'auto=format,compress&fit=crop&ar=4:5&w=' + w + '&q=85';
+            const _x = w => _u + (_u.includes('?') ? '&' : '?') + 'tr=ar-4-5,w-' + w + ',q-85,f-auto';
             _mi.sizes = '(min-width:1024px) 600px, 100vw';
             _mi.srcset = [500, 800, 1100].map(w => _x(w) + ' ' + w + 'w').join(', ');
             _mi.src = _x(800);
@@ -866,7 +875,7 @@ const totalPanier = state.cart.reduce((sum, item) => sum + parseInt(item.qty), 0
                 if (shippingElement) shippingElement.innerText = shippingCost + ' DZD';
                 if (totalElement) totalElement.innerText = (subtotal + shippingCost) + ' DZD';
            } else {
-                if (shippingElement) shippingElement.innerText = '- DZD';
+                if (shippingElement) shippingElement.innerText = deliveryType ? '- DZD' : (document.getElementById('wilaya') && document.getElementById('wilaya').value ? 'Choisissez la livraison' : 'Choisissez votre wilaya');
                 if (totalElement) totalElement.innerText = subtotal + ' DZD';
             }
             
